@@ -4,9 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
     const parallaxBg = document.getElementById('parallax-bg');
     const filamentSectionsContainer = document.getElementById('filament-sections-container');
-    const pricingListContainer = document.getElementById('pricing-list-container');
+    // Removed pricingListContainer as it's no longer used
     const sectionsToReveal = document.querySelectorAll('.fade-in');
-    const mainSections = document.querySelectorAll('section[id], header[id]');
+    // Updated mainSections to only include existing sections
+    const mainSections = document.querySelectorAll('section[id], header[id]:not(#pricing):not(#contact)');
 
     // --- Scroll Down Arrow functionality ---
     if (scrollDownArrow) {
@@ -47,17 +48,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const navObserverOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.5
+        threshold: 0.5 // Adjust this threshold if sections aren't highlighting correctly. 0.5 means 50% of the section must be visible.
     };
 
     const navObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const id = entry.target.id;
-            const correspondingLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
-
-            if (correspondingLink) {
-                if (entry.isIntersecting) {
-                    sidebarLinks.forEach(link => link.classList.remove('active'));
+            // Only update active class if the entry is intersecting
+            if (entry.isIntersecting) {
+                sidebarLinks.forEach(link => link.classList.remove('active'));
+                const correspondingLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                if (correspondingLink) {
                     correspondingLink.classList.add('active');
                 }
             }
@@ -106,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 filaments.forEach(filament => {
                     const sectionDiv = document.createElement('div');
                     sectionDiv.classList.add('filament-item');
-                    sectionDiv.id = filament.id; // Still good to have an ID for direct linking if needed
+                    sectionDiv.id = filament.id;
 
                     const colors = Array.isArray(filament.colors) ? filament.colors : [];
                     const colorsHtml = colors.map(colorHex => {
@@ -137,25 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('#filament-types')?.insertAdjacentHTML('beforeend', errorHtml);
             }
 
-            // Populate pricing list
-            if (pricingListContainer) {
-                pricingListContainer.innerHTML = '';
-                filaments.forEach(filament => {
-                    const pricingItem = document.createElement('div');
-                    pricingItem.classList.add('pricing-item');
-                    pricingItem.innerHTML = `
-                        <span>${filament.name}</span>
-                        <span class="price">$${filament.base_price_per_gram.toFixed(2)}/gram</span>
-                    `;
-                    pricingListContainer.appendChild(pricingItem);
-                });
-            } else {
-                console.error("Error: Element with ID 'pricing-list-container' not found. Cannot display pricing details.");
-                const errorHtml = `<p style="color: #ff6b6b; text-align: center; padding: 20px;">
-                                    <strong>Error:</strong> Pricing details container missing in HTML.
-                                  </p>`;
-                document.querySelector('#pricing')?.insertAdjacentHTML('beforeend', errorHtml);
-            }
+            // Removed pricing list population logic as the section is gone
+            // if (pricingListContainer) { /* ... */ }
 
             // --- Scroll Reveal Effect (after content is loaded) ---
             const observerOptions = {

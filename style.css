@@ -174,7 +174,7 @@ a:hover {
 .content-wrapper {
     position: relative;
     z-index: 1;
-    max-width: 1600px; /* Increased max-width to accommodate 4 columns */
+    max-width: 1700px; /* Further increased max-width for 4 columns */
     margin: 50px auto; /* This centers it horizontally */
     padding: 0 40px; /* Overall internal padding */
     padding-left: calc(20px + 55px + 40px + 40px); /* Add sidebar width + gap + desired internal padding */
@@ -283,9 +283,10 @@ section h3 {
 /* Filament Types Section - Grid Layout */
 #filament-sections-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Changed to 4 columns */
+    grid-template-columns: repeat(4, 1fr); /* Explicitly 4 columns */
     gap: 30px;
     margin-top: 30px;
+    align-items: stretch; /* Ensure grid items stretch to fill available height */
 }
 
 .filament-item {
@@ -300,6 +301,7 @@ section h3 {
     justify-content: space-between; /* Distribute space vertically */
     height: 100%; /* Ensure all items take full height of grid row */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box; /* Include padding/border in height */
 }
 
 .filament-item:hover {
@@ -313,6 +315,9 @@ section h3 {
     margin-top: 0;
     margin-bottom: 15px;
     text-align: center; /* Center filament type titles */
+    white-space: nowrap; /* Prevent title from wrapping */
+    overflow: hidden; /* Hide overflow if nowrap causes issues */
+    text-overflow: ellipsis; /* Add ellipsis if title is too long */
 }
 
 .filament-item p {
@@ -321,14 +326,13 @@ section h3 {
 }
 
 .filament-properties {
-    display: grid; /* Changed to grid for better alignment control */
-    grid-template-columns: 1fr; /* Stack items vertically */
+    display: flex; /* Changed to flexbox for uniform children heights */
+    flex-direction: column;
+    justify-content: flex-end; /* Push properties to the bottom */
     gap: 15px; /* Gap between property rows */
     margin-top: 20px;
     font-size: 1.0em;
-    /* Ensure properties are aligned at the bottom or are equal height */
-    align-content: end; /* Aligns content to the end of the grid container */
-    flex-grow: 0; /* Prevents this section from growing to ensure description pushes it down */
+    flex-shrink: 0; /* Prevent this section from shrinking too much */
 }
 
 .filament-properties span {
@@ -341,7 +345,7 @@ section h3 {
     gap: 10px;
     border: 1px solid rgba(0, 230, 118, 0.4);
     box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-    height: 50px; /* Fixed height for consistent alignment */
+    min-height: 50px; /* Minimum height for consistent alignment */
     justify-content: flex-start; /* Align text to the start */
     box-sizing: border-box; /* Include padding and border in the height */
 }
@@ -382,11 +386,6 @@ section h3 {
     flex-shrink: 0;
 }
 
-
-/* Pricing List Styling (removed, but keeping the class for safety in case it's added back) */
-/* .pricing-item { ... } */
-
-
 /* Footer */
 footer {
     text-align: center;
@@ -426,9 +425,9 @@ footer {
 }
 
 /* Responsive Adjustments */
-@media (max-width: 1650px) { /* Adjust for smaller screens where 4 columns might break */
+@media (max-width: 1750px) { /* Adjust for smaller screens where 4 columns might break */
     #filament-sections-container {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Revert to auto-fit for flexibility */
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Revert to auto-fit for flexibility on slightly smaller wide screens */
     }
 }
 

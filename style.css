@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2e2e2e; /* Dark background */
+    color: #ffffff;           /* White text */
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #1a1a1a; /* Slightly darker for header */
+    color: #ffffff;
+    padding: 20px 0;
+    text-align: center;
+    border-bottom: 2px solid #555;
+}
+
+h1, h2, h3 {
+    color: #ffffff; /* Ensure all headings are white */
+    margin-bottom: 10px;
+}
+
+main {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+section {
+    background-color: #3a3a3a; /* Slightly lighter than body for sections */
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #555;
+    margin: 40px 0;
+}
+
+/* Filament List Styling */
+.filament-item {
+    background-color: #4a4a4a; /* Distinct background for each filament item */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px; /* Space between flex items */
+}
+
+.filament-item strong {
+    flex-basis: 30%; /* Gives more space to the filament name */
+    min-width: 120px; /* Ensures it doesn't get too squashed */
+}
+
+.filament-item .details {
+    flex-grow: 1; /* Allows details to take up remaining space */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.filament-item .color-box {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; /* Makes it a circle */
+    border: 1px solid #ccc; /* Border for visibility, especially for white colors */
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.filament-item .color-name {
+    font-size: 0.9em;
+    margin-left: -5px; /* Adjust if needed to align with color box */
+}
+
+/* How-to-Order Section Styling */
+.guide-content ul, .guide-content ol {
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.guide-content li {
+    margin-bottom: 8px;
+}
+
+.note {
+    font-style: italic;
+    font-size: 0.9em;
+    color: #bbb;
+    margin-top: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 30px;
+    border-top: 1px solid #555;
+    font-size: 0.8em;
+    color: #bbb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .filament-item {
+        flex-direction: column; /* Stack items vertically on small screens */
+        align-items: flex-start;
+    }
+    .filament-item .details {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+    .filament-item strong {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}

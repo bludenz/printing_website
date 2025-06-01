@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Set glassiness strength as a CSS custom property
             if (typeof data.glassiness_strength === 'number') {
                 document.documentElement.style.setProperty('--glassiness-strength', data.glassiness_strength);
+                console.log('Glassiness strength set to:', data.glassiness_strength); // Log the value
             } else {
                 console.warn("glassiness_strength not found or is not a number in filaments.json. Defaulting to 1.0.");
                 document.documentElement.style.setProperty('--glassiness-strength', 1.0); // Fallback
@@ -107,22 +108,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 filaments.forEach(filament => {
                     const sectionDiv = document.createElement('div');
                     sectionDiv.classList.add('filament-item');
-                    // Changed filament.id to a more descriptive 'data-filament-id' for internal use,
-                    // as the main sections are now highlighted by new HTML IDs.
                     sectionDiv.setAttribute('data-filament-id', filament.id);
 
                     const colors = Array.isArray(filament.colors) ? filament.colors : [];
                     const colorsHtml = colors.map(colorHex => {
-                        return `<span class="color-box" style="background-color: ${colorHex};" title="${colorHex}"></span>`;
+                        return `<span class="color-box" style="background-color: <span class="math-inline">\{colorHex\};" title\="</span>{colorHex}"></span>`;
                     }).join('');
 
                     sectionDiv.innerHTML = `
-                        <h3>${filament.name}</h3>
-                        <p>${filament.description}</p>
+                        <h3><span class="math-inline">\{filament\.name\}</h3\>
+<p\></span>{filament.description}</p>
                         <div class="filament-properties">
-                            <span><i class="fas fa-money-bill-wave"></i> Price: $${filament.base_price_per_gram.toFixed(2)}/gram</span>
-                            <span><i class="fas fa-ruler-combined"></i> Hardness (Shore D): ${filament.hardness_shore_d}</span>
-                            <span class="colors-list">
+                            <span class="filament-property-item"><i class="fas fa-money-bill-wave"></i> Price: $${filament.base_price_per_gram.toFixed(2)}/gram</span>
+                            <span class="filament-property-item"><i class="fas fa-ruler-combined"></i> Hardness (Shore D): ${filament.hardness_shore_d}</span>
+                            <span class="filament-property-item colors-list">
                                 <i class="fas fa-palette"></i> Colors:
                                 <div class="color-boxes-wrapper">
                                     ${colorsHtml}
@@ -137,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const errorHtml = `<p style="color: #ff6b6b; text-align: center; padding: 20px;">
                                     <strong>Error:</strong> Filament details container missing in HTML.
                                   </p>`;
-                document.querySelector('#filament-types-section')?.insertAdjacentHTML('beforeend', errorHtml); // Use new ID
+                document.querySelector('#filament-types-section')?.insertAdjacentHTML('beforeend', errorHtml);
             }
 
             // --- Scroll Reveal Effect (after content is loaded) ---
@@ -167,29 +166,3 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- Parallax Effect ---
             if (parallaxBg) {
                 window.addEventListener('scroll', () => {
-                    const scrollPosition = window.pageYOffset;
-                    parallaxBg.style.transform = `scale(1.15) translateY(${scrollPosition * 0.3}px)`;
-                });
-            }
-        })
-        .catch(error => {
-            console.error('An error occurred during data loading or processing:', error);
-            const globalErrorDiv = document.createElement('div');
-            globalErrorDiv.style.cssText = `
-                position: fixed; top: 0; left: 0; width: 100%; padding: 15px;
-                background-color: rgba(255, 0, 0, 0.8); color: white; text-align: center;
-                font-family: sans-serif; z-index: 9999;
-                box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            `;
-            globalErrorDiv.innerHTML = `
-                <strong>Critical Error:</strong> Could not load essential data. Please check your console (F12) for details.
-                <br>Reason: ${error.message || 'Unknown error.'}
-            `;
-            document.body.prepend(globalErrorDiv);
-
-            if (parallaxBg) {
-                parallaxBg.style.backgroundImage = 'url("https://source.unsplash.com/random/1920x1080/?futuristic-tech,dark-abstract")';
-                parallaxBg.style.filter = 'blur(10px) brightness(0.7)';
-            }
-        });
-});

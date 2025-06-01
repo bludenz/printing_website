@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const filamentSectionsContainer = document.getElementById('filament-sections-container');
     const pricingListContainer = document.getElementById('pricing-list-container');
     const sectionsToReveal = document.querySelectorAll('.fade-in');
-    const mainSections = document.querySelectorAll('section[id], header[id]'); // Select all sections and header with an ID
+    const mainSections = document.querySelectorAll('section[id], header[id]');
 
     // --- Scroll Down Arrow functionality ---
     if (scrollDownArrow) {
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sidebarLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href'); // e.g., "#about"
+                const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({
@@ -45,9 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Active Navbar State on Scroll ---
     const navObserverOptions = {
-        root: null, // relative to the viewport
+        root: null,
         rootMargin: '0px',
-        threshold: 0.5 // 50% of the section must be visible
+        threshold: 0.5
     };
 
     const navObserver = new IntersectionObserver((entries) => {
@@ -57,17 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (correspondingLink) {
                 if (entry.isIntersecting) {
-                    // Remove active from all links first to ensure only one is active
                     sidebarLinks.forEach(link => link.classList.remove('active'));
                     correspondingLink.classList.add('active');
                 }
-                // Optional: To make it active only when scrolling *into* the section
-                // if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-                //     sidebarLinks.forEach(link => link.classList.remove('active'));
-                //     correspondingLink.classList.add('active');
-                // } else {
-                //     correspondingLink.classList.remove('active');
-                // }
             }
         });
     }, navObserverOptions);
@@ -96,11 +88,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.warn("Background image URL not found in filaments.json.");
             }
 
+            // Set glassiness strength as a CSS custom property
+            if (typeof data.glassiness_strength === 'number') {
+                document.documentElement.style.setProperty('--glassiness-strength', data.glassiness_strength);
+            } else {
+                console.warn("glassiness_strength not found or is not a number in filaments.json. Defaulting to 1.0.");
+                document.documentElement.style.setProperty('--glassiness-strength', 1.0); // Fallback
+            }
+
             const filaments = data.filaments;
 
             // Clear loading messages and populate filament sections
             if (filamentSectionsContainer) {
-                filamentSectionsContainer.innerHTML = ''; // Clear "Loading filament details..."
+                filamentSectionsContainer.innerHTML = '';
                 filamentSectionsContainer.classList.add('filament-grid-container');
 
                 filaments.forEach(filament => {

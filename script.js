@@ -3,8 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollDownArrow = document.querySelector('.scroll-down-arrow');
     if (scrollDownArrow) {
         scrollDownArrow.addEventListener('click', () => {
-            // Find the next section or scroll a fixed amount
-            const firstSection = document.querySelector('main section');
+            const firstSection = document.querySelector('main .section-content'); // Select the first actual content section
             if (firstSection) {
                 firstSection.scrollIntoView({ behavior: 'smooth' });
             } else {
@@ -17,13 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
     sidebarLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default hash jump
+            e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
                 targetElement.scrollIntoView({
                     behavior: 'smooth',
-                    block: 'start' // Scroll to the top of the element
+                    block: 'start'
                 });
             }
         });
@@ -119,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.addEventListener('scroll', () => {
                     const scrollPosition = window.pageYOffset;
                     // Adjust the multiplier for more or less parallax effect
+                    // Make sure not to scale down too much or it breaks the blur.
                     parallaxBg.style.transform = `scale(1.05) translateY(${scrollPosition * 0.3}px)`; // 0.3 is the parallax speed
                 });
             }

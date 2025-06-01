@@ -23,20 +23,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const filamentSectionsContainer = document.getElementById('filament-sections-container');
             const pricingListContainer = document.getElementById('pricing-list-container');
             
-            // Clear "Loading..." messages
-            if (filamentSectionsContainer) filamentSectionsContainer.innerHTML = '';
-            if (pricingListContainer) pricingListContainer.innerHTML = '';
+            // Crucial: Check if elements exist before trying to manipulate them
+            // This is the fix for "null" errors
+            if (filamentSectionsContainer) {
+                filamentSectionsContainer.innerHTML = ''; // Clear "Loading..." message
+            }
+            if (pricingListContainer) {
+                pricingListContainer.innerHTML = ''; // Clear "Loading..." message
+            }
 
             filaments.forEach(filament => {
                 // Create Filament Type Section
-                if (filamentSectionsContainer) {
+                if (filamentSectionsContainer) { // Only proceed if the container exists
                     const sectionDiv = document.createElement('div');
                     sectionDiv.classList.add('filament-section');
                     sectionDiv.id = filament.id; // Assign ID for potential navigation later
 
                     const colorsHtml = filament.colors.map(colorHex => {
                         // Using hex codes directly for background-color
-                        return `<span class="color-box" style="background-color: ${colorHex};"></span>`;
+                        return `<span class="color-box" style="background-color: ${colorHex};" title="${colorHex}"></span>`; // Added title for hover info
                     }).join('');
 
                     sectionDiv.innerHTML = `
@@ -52,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 // Create Pricing List Item
-                if (pricingListContainer) {
+                if (pricingListContainer) { // Only proceed if the container exists
                     const pricingItem = document.createElement('div');
                     pricingItem.classList.add('pricing-item');
                     pricingItem.innerHTML = `

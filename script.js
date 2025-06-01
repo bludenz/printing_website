@@ -2,17 +2,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Select all necessary elements at the start of DOMContentLoaded.
     const scrollDownArrow = document.querySelector('.scroll-down-arrow');
     const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
-    const parallaxBg = document.getElementById('parallax-bg');
+    const parallaxBg = document.getElementById('parallax-bg'); // Ensure this is only declared ONCE.
     const filamentSectionsContainer = document.getElementById('filament-sections-container');
-    // Removed pricingListContainer as it's no longer used
     const sectionsToReveal = document.querySelectorAll('.fade-in');
-    // Updated mainSections to only include existing sections
-    const mainSections = document.querySelectorAll('section[id], header[id]:not(#pricing):not(#contact)');
+
+    // Updated mainSections to only include existing sections with their new IDs
+    const mainSections = document.querySelectorAll('#home-section, #about-section, #filament-types-section, #faq-section');
 
     // --- Scroll Down Arrow functionality ---
     if (scrollDownArrow) {
         scrollDownArrow.addEventListener('click', () => {
-            const aboutSection = document.getElementById('about');
+            const aboutSection = document.getElementById('about-section'); // Use new ID
             if (aboutSection) {
                 aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
@@ -107,7 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 filaments.forEach(filament => {
                     const sectionDiv = document.createElement('div');
                     sectionDiv.classList.add('filament-item');
-                    sectionDiv.id = filament.id;
+                    // Changed filament.id to a more descriptive 'data-filament-id' for internal use,
+                    // as the main sections are now highlighted by new HTML IDs.
+                    sectionDiv.setAttribute('data-filament-id', filament.id);
 
                     const colors = Array.isArray(filament.colors) ? filament.colors : [];
                     const colorsHtml = colors.map(colorHex => {
@@ -135,11 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const errorHtml = `<p style="color: #ff6b6b; text-align: center; padding: 20px;">
                                     <strong>Error:</strong> Filament details container missing in HTML.
                                   </p>`;
-                document.querySelector('#filament-types')?.insertAdjacentHTML('beforeend', errorHtml);
+                document.querySelector('#filament-types-section')?.insertAdjacentHTML('beforeend', errorHtml); // Use new ID
             }
-
-            // Removed pricing list population logic as the section is gone
-            // if (pricingListContainer) { /* ... */ }
 
             // --- Scroll Reveal Effect (after content is loaded) ---
             const observerOptions = {

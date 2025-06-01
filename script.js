@@ -1,22 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Select all necessary elements at the start of DOMContentLoaded.
-    // Use 'let' for elements that might be conditionally assigned or used.
     const scrollDownArrow = document.querySelector('.scroll-down-arrow');
     const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
-    const parallaxBg = document.getElementById('parallax-bg'); // Ensure this ID exists in HTML
-    const filamentSectionsContainer = document.getElementById('filament-sections-container'); // Ensure this ID exists in HTML
-    const pricingListContainer = document.getElementById('pricing-list-container'); // Ensure this ID exists in HTML
+    const parallaxBg = document.getElementById('parallax-bg');
+    const filamentSectionsContainer = document.getElementById('filament-sections-container');
+    const pricingListContainer = document.getElementById('pricing-list-container');
     const sectionsToReveal = document.querySelectorAll('.fade-in');
 
     // --- Scroll Down Arrow functionality ---
     if (scrollDownArrow) {
         scrollDownArrow.addEventListener('click', () => {
-            // Smoothly scroll to the top of the 'About Us' section
             const aboutSection = document.getElementById('about');
             if (aboutSection) {
                 aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
-                // Fallback: scroll down a certain amount if 'about' section not found
                 window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
             }
         });
@@ -29,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sidebarLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href'); // e.g., "#about"
+                const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({
@@ -49,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('filaments.json')
         .then(response => {
             if (!response.ok) {
-                // If the HTTP response is not OK, throw an error with more context
                 const errorStatus = response.status;
                 const errorText = response.statusText;
                 throw new Error(`HTTP error! Status: ${errorStatus} ${errorText || ''} - Failed to load filaments.json. Please ensure the file exists and is accessible.`);
@@ -66,17 +62,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.warn("Background image URL not found in filaments.json.");
             }
 
-            const filaments = data.filaments; // Access the filaments array from the data object
+            const filaments = data.filaments;
 
             // Clear loading messages and populate filament sections
             if (filamentSectionsContainer) {
                 filamentSectionsContainer.innerHTML = ''; // Clear "Loading filament details..."
+                // Add a class for CSS Grid to the container
+                filamentSectionsContainer.classList.add('filament-grid-container');
+
                 filaments.forEach(filament => {
                     const sectionDiv = document.createElement('div');
-                    sectionDiv.classList.add('filament-section');
-                    sectionDiv.id = filament.id; // Assign ID for potential navigation
+                    sectionDiv.classList.add('filament-item'); // Changed class for grid styling
+                    sectionDiv.id = filament.id;
 
-                    const colorsHtml = filament.colors.map(colorHex => {
+                    // Ensure colors are always an array before mapping
+                    const colors = Array.isArray(filament.colors) ? filament.colors : [];
+                    const colorsHtml = colors.map(colorHex => {
                         return `<span class="color-box" style="background-color: ${colorHex};" title="${colorHex}"></span>`;
                     }).join('');
 
@@ -86,14 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="filament-properties">
                             <span><i class="fas fa-money-bill-wave"></i> Price: $${filament.base_price_per_gram.toFixed(2)}/gram</span>
                             <span><i class="fas fa-ruler-combined"></i> Hardness (Shore D): ${filament.hardness_shore_d}</span>
-                            <span><i class="fas fa-palette"></i> Colors: ${colorsHtml}</span>
+                            <span class="colors-list"><i class="fas fa-palette"></i> Colors: ${colorsHtml}</span>
                         </div>
                     `;
                     filamentSectionsContainer.appendChild(sectionDiv);
                 });
             } else {
                 console.error("Error: Element with ID 'filament-sections-container' not found. Cannot display filament details.");
-                // Provide user feedback directly if container is missing
                 const errorHtml = `<p style="color: #ff6b6b; text-align: center; padding: 20px;">
                                     <strong>Error:</strong> Filament details container missing in HTML.
                                   </p>`;
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Populate pricing list
             if (pricingListContainer) {
-                pricingListContainer.innerHTML = ''; // Clear "Loading pricing details..."
+                pricingListContainer.innerHTML = '';
                 filaments.forEach(filament => {
                     const pricingItem = document.createElement('div');
                     pricingItem.classList.add('pricing-item');
@@ -114,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             } else {
                 console.error("Error: Element with ID 'pricing-list-container' not found. Cannot display pricing details.");
-                // Provide user feedback directly if container is missing
                 const errorHtml = `<p style="color: #ff6b6b; text-align: center; padding: 20px;">
                                     <strong>Error:</strong> Pricing details container missing in HTML.
                                   </p>`;
@@ -149,13 +148,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (parallaxBg) {
                 window.addEventListener('scroll', () => {
                     const scrollPosition = window.pageYOffset;
-                    parallaxBg.style.transform = `scale(1.15) translateY(${scrollPosition * 0.3}px)`; // Adjusted scale and speed
+                    parallaxBg.style.transform = `scale(1.15) translateY(${scrollPosition * 0.3}px)`;
                 });
             }
         })
         .catch(error => {
             console.error('An error occurred during data loading or processing:', error);
-            // Universal error message for the user, placed in a prominent area
             const globalErrorDiv = document.createElement('div');
             globalErrorDiv.style.cssText = `
                 position: fixed; top: 0; left: 0; width: 100%; padding: 15px;
@@ -169,10 +167,9 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             document.body.prepend(globalErrorDiv);
 
-            // Fallback for background image if data fetch fails
             if (parallaxBg) {
-                parallaxBg.style.backgroundImage = 'url("https://source.unsplash.com/random/1920x1080/?futuristic-tech,dark-abstract")'; // Generic fallback image
-                parallaxBg.style.filter = 'blur(10px) brightness(0.7)'; // Apply blur and darken
+                parallaxBg.style.backgroundImage = 'url("https://source.unsplash.com/random/1920x1080/?futuristic-tech,dark-abstract")';
+                parallaxBg.style.filter = 'blur(10px) brightness(0.7)';
             }
         });
 });

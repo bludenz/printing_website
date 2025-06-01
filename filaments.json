@@ -19,20 +19,20 @@
             "colors": ["#E0FFFF", "#000000", "#FFFFFF", "#0000FF"]
         },
         {
-            "id": "abs",
-            "name": "ABS",
-            "description": "Known for its strength, toughness, and temperature resistance, ABS is a classic engineering plastic. It's more challenging to print due to warping, but provides durable and rigid parts suitable for robust applications and post-processing like sanding and painting. Best for indoor use.",
-            "hardness_shore_d": 105,
-            "base_price_per_gram": 0.18,
-            "colors": ["#000000", "#FFFFFF"]
-        },
-        {
             "id": "asa",
             "name": "ASA",
             "description": "ASA is an excellent weather-resistant alternative to ABS, offering superior UV stability and outdoor durability. It shares many properties with ABS, including strength and heat resistance, but with much less warping during printing. Ideal for outdoor functional parts, automotive components, and marine applications.",
             "hardness_shore_d": 100,
             "base_price_per_gram": 0.18,
             "colors": ["#008080", "#C0C0C0"]
+        },
+        {
+            "id": "abs",
+            "name": "ABS",
+            "description": "Known for its strength, toughness, and temperature resistance, ABS is a classic engineering plastic. It's more challenging to print due to warping, but provides durable and rigid parts suitable for robust applications and post-processing like sanding and painting. Best for indoor use.",
+            "hardness_shore_d": 105,
+            "base_price_per_gram": 0.18,
+            "colors": ["#000000", "#FFFFFF"]
         }
     ]
 }

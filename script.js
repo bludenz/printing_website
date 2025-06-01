@@ -1,9 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Declare parallaxBg once at the top of this scope
+    let parallaxBg = document.getElementById('parallax-bg'); // Use 'let' for reassignability later if needed
+
     // --- Scroll Down Arrow functionality ---
     const scrollDownArrow = document.querySelector('.scroll-down-arrow');
     if (scrollDownArrow) {
         scrollDownArrow.addEventListener('click', () => {
-            const firstSection = document.querySelector('main .section-content'); // Select the first actual content section
+            const firstSection = document.querySelector('main .section-content');
             if (firstSection) {
                 firstSection.scrollIntoView({ behavior: 'smooth' });
             } else {
@@ -32,16 +35,24 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('filaments.json')
         .then(response => {
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status} - Failed to load filaments.json. Please ensure the file exists in the same directory and you are running a local server for development.`);
+                // Check for HTTP errors and provide better feedback
+                const errorMessage = `HTTP error! Status: ${response.status} - Failed to load filaments.json. Please ensure the file exists in the same directory and you are running a local server for development.`;
+                console.error(errorMessage);
+                throw new Error(errorMessage);
             }
             return response.json();
         })
         .then(data => {
             // Set background image from JSON
-            const parallaxBg = document.getElementById('parallax-bg');
+            // We already declared parallaxBg at the top, just assign to it
             if (parallaxBg && data.background_image) {
                 parallaxBg.style.backgroundImage = `url('${data.background_image}')`;
+            } else if (!parallaxBg) {
+                console.warn("Parallax background element not found.");
+            } else {
+                console.warn("Background image URL not found in filaments.json.");
             }
+
 
             const filaments = data.filaments; // Access the filaments array from the data object
 
@@ -63,12 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     sectionDiv.id = filament.id;
 
                     const colorsHtml = filament.colors.map(colorHex => {
-                        return `<span class="color-box" style="background-color: ${colorHex};" title="${colorHex}"></span>`;
+                        return `<span class="color-box" style="background-color: <span class="math-inline">\{colorHex\};" title\="</span>{colorHex}"></span>`;
                     }).join('');
 
                     sectionDiv.innerHTML = `
-                        <h3>${filament.name}</h3>
-                        <p>${filament.description}</p>
+                        <h3><span class="math-inline">\{filament\.name\}</h3\>
+<p\></span>{filament.description}</p>
                         <div class="filament-properties">
                             <span><i class="fas fa-money-bill-wave"></i> Price: $${filament.base_price_per_gram.toFixed(2)}/gram</span>
                             <span><i class="fas fa-ruler-combined"></i> Hardness (Shore D): ${filament.hardness_shore_d}</span>
@@ -83,8 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pricingItem = document.createElement('div');
                     pricingItem.classList.add('pricing-item');
                     pricingItem.innerHTML = `
-                        <span>${filament.name}</span>
-                        <span class="price">$${filament.base_price_per_gram.toFixed(2)}/gram</span>
+                        <span><span class="math-inline">\{filament\.name\}</span\>
+<span class\="price"\></span>${filament.base_price_per_gram.toFixed(2)}/gram</span>
                     `;
                     pricingListContainer.appendChild(pricingItem);
                 }
@@ -113,22 +124,35 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // --- Parallax Effect ---
-            const parallaxBg = document.getElementById('parallax-bg');
+            // Ensure parallaxBg is accessible here
             if (parallaxBg) {
                 window.addEventListener('scroll', () => {
                     const scrollPosition = window.pageYOffset;
-                    // Adjust the multiplier for more or less parallax effect
-                    // Make sure not to scale down too much or it breaks the blur.
-                    parallaxBg.style.transform = `scale(1.05) translateY(${scrollPosition * 0.3}px)`; // 0.3 is the parallax speed
+                    parallaxBg.style.transform = `scale(1.05) translateY(${scrollPosition * 0.3}px)`;
                 });
             }
 
         })
         .catch(error => {
-            console.error('Error loading filament data:', error);
+            console.error('An error occurred during data loading or processing:', error);
             const filamentSectionsContainer = document.getElementById('filament-sections-container');
             const pricingListContainer = document.getElementById('pricing-list-container');
-            if (filamentSectionsContainer) filamentSectionsContainer.innerHTML = '<p style="color: red;">Failed to load filament details. Please ensure the server is running and the filaments.json file is correctly placed.</p>';
-            if (pricingListContainer) pricingListContainer.innerHTML = '<p style="color: red;">Failed to load pricing details.</p>';
-        });
-});
+            // Provide user feedback even if specific containers are null
+            const errorMessage = `<p style="color: #ff6b6b; text-align: center; padding: 20px;">
+                                    <strong>Error:</strong> Failed to load or display content. <br>
+                                    ${error.message || 'Please check your console for more details and ensure files are correctly configured.'}
+                                  </p>`;
+            if (filamentSectionsContainer) {
+                filamentSectionsContainer.innerHTML = errorMessage;
+            } else {
+                document.querySelector('main')?.insertAdjacentHTML('afterbegin', errorMessage);
+            }
+            if (pricingListContainer) {
+                pricingListContainer.innerHTML = ''; // Clear if it was showing "Loading..."
+            }
+            // If parallaxBg was not found earlier, try to find it here and apply fallback background
+            if (!parallaxBg) {
+                parallaxBg = document.getElementById('parallax-bg');
+            }
+            if (parallaxBg) {
+                parallaxBg.style.backgroundImage = 'url("

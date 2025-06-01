@@ -100,13 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Clear loading messages and populate filament sections
             if (filamentSectionsContainer) {
-                filamentSectionsContainer.innerHTML = '';
+                filamentSectionsContainer.innerHTML = ''; // Clear "Loading filament details..."
                 filamentSectionsContainer.classList.add('filament-grid-container');
 
                 filaments.forEach(filament => {
                     const sectionDiv = document.createElement('div');
                     sectionDiv.classList.add('filament-item');
-                    sectionDiv.id = filament.id;
+                    sectionDiv.id = filament.id; // Still good to have an ID for direct linking if needed
 
                     const colors = Array.isArray(filament.colors) ? filament.colors : [];
                     const colorsHtml = colors.map(colorHex => {

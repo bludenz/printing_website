@@ -1,12 +1,18 @@
 /* General Body & Root Styling */
+html, body {
+    height: 100%; /* Crucial for fixed positioning and background to cover full height */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll from animations */
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #ffffff;
-    margin: 0;
-    padding: 0;
     line-height: 1.6;
-    overflow-x: hidden;
-    background-color: #2e2e2e; /* Fallback for no JS or slow loading */
+    background-color: #2e2e2e; /* Fallback if background image fails */
+    position: relative; /* For stacking contexts */
 }
 
 a {
@@ -20,13 +26,13 @@ a:hover {
 
 /* Background Image & Overlay (for Parallax) */
 .background-container {
-    position: fixed;
+    position: fixed; /* Keep background fixed in viewport */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     overflow: hidden; /* Important for parallax */
-    z-index: -2;
+    z-index: -2; /* Ensures it's behind everything */
 }
 
 .parallax-bg {
@@ -35,7 +41,6 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Background image set by JS */
     background-size: cover;
     background-position: center;
     filter: blur(8px); /* More blur for the glassmorphism effect */
@@ -56,7 +61,7 @@ a:hover {
 
 /* Sidebar Navigation */
 .sidebar-nav {
-    position: fixed;
+    position: fixed; /* Keep sidebar fixed in viewport */
     left: 20px; /* Adjust as needed */
     top: 50%;
     transform: translateY(-50%);
@@ -66,7 +71,7 @@ a:hover {
     border-radius: 20px;
     padding: 15px 10px;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    z-index: 100; /* Ensure it's on top */
+    z-index: 100; /* Ensure it's on top of other content */
 }
 
 .sidebar-nav ul {
@@ -121,12 +126,12 @@ a:hover {
 
 /* Main Content Wrapper (The "floating" UI) */
 .content-wrapper {
-    position: relative; /* For z-index */
-    z-index: 1;
+    position: relative; /* For z-index stacking context */
+    z-index: 1; /* Ensure content is above background */
     max-width: 1200px; /* Wider content area */
-    margin-left: auto;
-    margin-right: auto;
-    padding: 40px 20px 40px 100px; /* Adjust left padding for sidebar */
+    margin: 40px auto; /* Center the wrapper and give top/bottom margin */
+    margin-left: calc(20px + 45px + 20px); /* Sidebar left offset + sidebar width + desired gap */
+    padding: 0 20px; /* Right and general padding */
     box-sizing: border-box; /* Include padding in width */
 }
 
@@ -272,4 +277,77 @@ section h3 {
     border-radius: 50%;
     border: 2px solid rgba(255, 255, 255, 0.4); /* More prominent border for colors */
     display: inline-block;
-    vertical-align:
+    vertical-align: middle;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+/* Pricing List Styling (JS generated) */
+.pricing-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 18px 25px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.1), 0 2px 10px rgba(0,0,0,0.2);
+    font-size: 1.2em;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pricing-item .price {
+    font-weight: bold;
+    color: #00bcd4;
+    font-size: 1.3em;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 35px 0;
+    margin-top: 50px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9em;
+    color: #bbb;
+    background: rgba(26, 26, 26, 0.9);
+    border-bottom-left-radius: 15px; /* Match section rounding */
+    border-bottom-right-radius: 15px;
+}
+
+/* Scroll Reveal Animation (JS will add 'show' class) */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px); /* More pronounced initial translateY */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* Slower, smoother transition */
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .content-wrapper {
+        margin-left: calc(10px + 45px + 15px); /* Adjust sidebar spacing */
+        padding: 0 15px;
+    }
+    .sidebar-nav {
+        left: 10px;
+    }
+    header h1 {
+        font-size: 3em;
+    }
+    section h2 {
+        font-size: 2.2em;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar-nav {
+        position: static; /* Make sidebar flow with content */
+        transform: none;
+        width: 100%;
+        border-radius: 0;
+        padding

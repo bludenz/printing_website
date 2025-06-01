@@ -1,12 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Declare parallaxBg once at the top of this scope
-    let parallaxBg = document.getElementById('parallax-bg'); // Use 'let' for reassignability later if needed
+    // Declare core elements once here
+    const scrollDownArrow = document.querySelector('.scroll-down-arrow');
+    const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+    const parallaxBg = document.getElementById('parallax-bg'); // Declared once
+    const filamentSectionsContainer = document.getElementById('filament-sections-container');
+    const pricingListContainer = document.getElementById('pricing-list-container');
 
     // --- Scroll Down Arrow functionality ---
-    const scrollDownArrow = document.querySelector('.scroll-down-arrow');
     if (scrollDownArrow) {
         scrollDownArrow.addEventListener('click', () => {
-            const firstSection = document.querySelector('main .section-content');
+            const firstSection = document.querySelector('.section-content:not(#top)'); // Selects first section *after* the header
             if (firstSection) {
                 firstSection.scrollIntoView({ behavior: 'smooth' });
             } else {
@@ -16,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Sidebar Navigation Smooth Scrolling ---
-    const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
     sidebarLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -35,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('filaments.json')
         .then(response => {
             if (!response.ok) {
-                // Check for HTTP errors and provide better feedback
                 const errorMessage = `HTTP error! Status: ${response.status} - Failed to load filaments.json. Please ensure the file exists in the same directory and you are running a local server for development.`;
                 console.error(errorMessage);
                 throw new Error(errorMessage);
@@ -44,21 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(data => {
             // Set background image from JSON
-            // We already declared parallaxBg at the top, just assign to it
             if (parallaxBg && data.background_image) {
                 parallaxBg.style.backgroundImage = `url('${data.background_image}')`;
             } else if (!parallaxBg) {
-                console.warn("Parallax background element not found.");
+                console.warn("Parallax background element (#parallax-bg) not found in HTML.");
             } else {
                 console.warn("Background image URL not found in filaments.json.");
             }
 
-
             const filaments = data.filaments; // Access the filaments array from the data object
 
-            const filamentSectionsContainer = document.getElementById('filament-sections-container');
-            const pricingListContainer = document.getElementById('pricing-list-container');
-            
+            // Clear loading messages if containers exist
             if (filamentSectionsContainer) {
                 filamentSectionsContainer.innerHTML = '';
             }
@@ -71,15 +68,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (filamentSectionsContainer) {
                     const sectionDiv = document.createElement('div');
                     sectionDiv.classList.add('filament-section');
-                    sectionDiv.id = filament.id;
+                    sectionDiv.id = filament.id; // Assign ID for potential navigation later
 
                     const colorsHtml = filament.colors.map(colorHex => {
-                        return `<span class="color-box" style="background-color: <span class="math-inline">\{colorHex\};" title\="</span>{colorHex}"></span>`;
+                        return `<span class="color-box" style="background-color: ${colorHex};" title="${colorHex}"></span>`;
                     }).join('');
 
                     sectionDiv.innerHTML = `
-                        <h3><span class="math-inline">\{filament\.name\}</h3\>
-<p\></span>{filament.description}</p>
+                        <h3>${filament.name}</h3>
+                        <p>${filament.description}</p>
                         <div class="filament-properties">
                             <span><i class="fas fa-money-bill-wave"></i> Price: $${filament.base_price_per_gram.toFixed(2)}/gram</span>
                             <span><i class="fas fa-ruler-combined"></i> Hardness (Shore D): ${filament.hardness_shore_d}</span>
@@ -94,8 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pricingItem = document.createElement('div');
                     pricingItem.classList.add('pricing-item');
                     pricingItem.innerHTML = `
-                        <span><span class="math-inline">\{filament\.name\}</span\>
-<span class\="price"\></span>${filament.base_price_per_gram.toFixed(2)}/gram</span>
+                        <span>${filament.name}</span>
+                        <span class="price">$${filament.base_price_per_gram.toFixed(2)}/gram</span>
                     `;
                     pricingListContainer.appendChild(pricingItem);
                 }
@@ -124,20 +121,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // --- Parallax Effect ---
-            // Ensure parallaxBg is accessible here
             if (parallaxBg) {
                 window.addEventListener('scroll', () => {
                     const scrollPosition = window.pageYOffset;
-                    parallaxBg.style.transform = `scale(1.05) translateY(${scrollPosition * 0.3}px)`;
+                    parallaxBg.style.transform = `scale(1.1) translateY(${scrollPosition * 0.3}px)`;
                 });
             }
 
         })
         .catch(error => {
             console.error('An error occurred during data loading or processing:', error);
-            const filamentSectionsContainer = document.getElementById('filament-sections-container');
-            const pricingListContainer = document.getElementById('pricing-list-container');
-            // Provide user feedback even if specific containers are null
+            // Fallback for containers and background if data fails
             const errorMessage = `<p style="color: #ff6b6b; text-align: center; padding: 20px;">
                                     <strong>Error:</strong> Failed to load or display content. <br>
                                     ${error.message || 'Please check your console for more details and ensure files are correctly configured.'}
@@ -145,14 +139,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (filamentSectionsContainer) {
                 filamentSectionsContainer.innerHTML = errorMessage;
             } else {
-                document.querySelector('main')?.insertAdjacentHTML('afterbegin', errorMessage);
+                // If filamentSectionsContainer is null, inject error into main content area
+                document.querySelector('.content-wrapper')?.insertAdjacentHTML('afterbegin', errorMessage);
             }
             if (pricingListContainer) {
-                pricingListContainer.innerHTML = ''; // Clear if it was showing "Loading..."
+                pricingListContainer.innerHTML = '<p style="color: #ff6b6b; text-align: center;">Failed to load pricing details.</p>';
             }
-            // If parallaxBg was not found earlier, try to find it here and apply fallback background
-            if (!parallaxBg) {
-                parallaxBg = document.getElementById('parallax-bg');
-            }
+            // Ensure background fallback applies even if fetch fails
             if (parallaxBg) {
-                parallaxBg.style.backgroundImage = 'url("
+                parallaxBg.style.backgroundImage = 'url("https://source.unsplash.com/random/1920x1080/?futuristic-tech,dark-abstract")'; // Fallback image
+                parallaxBg.style.filter = 'blur(10px)';
+            }
+        });
+});

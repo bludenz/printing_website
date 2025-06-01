@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Select all necessary elements at the start of DOMContentLoaded.
     const scrollDownArrow = document.querySelector('.scroll-down-arrow');
     const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
-    const parallaxBg = document.getElementById('parallax-bg'); // Ensure this is only declared ONCE.
+    const parallaxBg = document.getElementById('parallax-bg');
     const filamentSectionsContainer = document.getElementById('filament-sections-container');
     const sectionsToReveal = document.querySelectorAll('.fade-in');
 
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Scroll Down Arrow functionality ---
     if (scrollDownArrow) {
         scrollDownArrow.addEventListener('click', () => {
-            const aboutSection = document.getElementById('about-section'); // Use new ID
+            const aboutSection = document.getElementById('about-section');
             if (aboutSection) {
                 aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
@@ -115,13 +115,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         return `<span class="color-box" style="background-color: ${colorHex};" title="${colorHex}"></span>`;
                     }).join('');
 
+                    // NOTE: Added specific classes (filament-price, filament-hardness, filament-colors) here
                     sectionDiv.innerHTML = `
                         <h3>${filament.name}</h3>
                         <p>${filament.description}</p>
                         <div class="filament-properties">
-                            <span class="filament-property-item"><i class="fas fa-money-bill-wave"></i> Price: $${filament.base_price_per_gram.toFixed(2)}/gram</span>
-                            <span class="filament-property-item"><i class="fas fa-ruler-combined"></i> Hardness (Shore D): ${filament.hardness_shore_d}</span>
-                            <span class="filament-property-item colors-list">
+                            <span class="filament-property-item filament-price"><i class="fas fa-money-bill-wave"></i> Price: $${filament.base_price_per_gram.toFixed(2)}/gram</span>
+                            <span class="filament-property-item filament-hardness"><i class="fas fa-ruler-combined"></i> Hardness (Shore D): ${filament.hardness_shore_d}</span>
+                            <span class="filament-property-item filament-colors colors-list">
                                 <i class="fas fa-palette"></i> Colors:
                                 <div class="color-boxes-wrapper">
                                     ${colorsHtml}

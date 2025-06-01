@@ -1,10 +1,10 @@
 /* General Body & Root Styling */
 html, body {
-    height: 100%;
+    height: 100%; /* CRITICAL for fixed positioning to work correctly */
     width: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Prevent horizontal scroll from any overflow */
     scroll-behavior: smooth; /* Smooth scrolling for anchors */
 }
 
@@ -13,31 +13,30 @@ body {
     color: #e0e0e0; /* Softer white for general text */
     line-height: 1.7;
     background-color: #1a1a1a; /* Very dark fallback background */
-    position: relative;
-    /* This ensures no default margin is pushing content around */
-    display: flex; /* Helps with layout consistency, though content-wrapper handles main layout */
+    position: relative; /* Establishes stacking context */
+    /* Remove display:flex on body if not explicitly used for direct children layout */
 }
 
 a {
-    color: #4CAF50; /* Futuristic vibrant green for links */
+    color: #00e676; /* Brighter, more neon green for links */
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: #81C784; /* Lighter green on hover */
+    color: #69f0ae; /* Lighter neon green on hover */
     text-decoration: underline;
 }
 
 /* Background Image & Overlay (for Parallax) */
 .background-container {
-    position: fixed;
+    position: fixed; /* Stays in viewport */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    z-index: -2;
+    overflow: hidden; /* Clips content outside container */
+    z-index: -2; /* Ensures it's behind everything else */
 }
 
 .parallax-bg {
@@ -48,8 +47,8 @@ a:hover {
     height: 100%;
     background-size: cover;
     background-position: center;
-    filter: blur(10px); /* Slightly more blur */
-    transform: scale(1.1); /* Slightly more scale for better parallax effect */
+    filter: blur(15px) brightness(0.8); /* Increased blur, slight darkening for contrast */
+    transform: scale(1.15); /* More scale for a more pronounced parallax */
     transition: transform 0.1s ease-out;
 }
 
@@ -59,24 +58,23 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(26, 26, 26, 0.7); /* Darker, more opaque overlay */
-    backdrop-filter: blur(0px); /* This isn't actually needed on overlay, only on glass elements */
-    transition: backdrop-filter 0.5s ease;
+    background-color: rgba(10, 10, 10, 0.8); /* Even darker, more opaque overlay */
+    /* backdrop-filter is applied to the content elements, not the overlay */
 }
 
 /* Sidebar Navigation */
 .sidebar-nav {
-    position: fixed;
+    position: fixed; /* STAYS IN VIEWPORT */
     left: 20px;
     top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.08); /* More transparent for a lighter glass look */
-    backdrop-filter: blur(20px) saturate(1.8); /* More blur, added saturate for vibrancy */
-    border: 1px solid rgba(255, 255, 255, 0.15); /* Softer border */
-    border-radius: 25px; /* Slightly more rounded */
+    transform: translateY(-50%); /* Centers vertically */
+    background: rgba(255, 255, 255, 0.08); /* Transparent base */
+    backdrop-filter: blur(25px) saturate(1.8) brightness(1.2); /* HEAVIER BLUR, more vibrant */
+    border: 1px solid rgba(255, 255, 255, 0.25); /* More visible, crisper border */
+    border-radius: 30px; /* More rounded */
     padding: 15px 10px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Deeper shadow */
-    z-index: 100;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255,255,255,0.05); /* Deeper outer shadow, subtle inner glow */
+    z-index: 100; /* Ensures it's on top */
 }
 
 .sidebar-nav ul {
@@ -86,32 +84,33 @@ a:hover {
 }
 
 .sidebar-nav li {
-    margin: 18px 0; /* More spacing */
+    margin: 20px 0; /* More spacing */
 }
 
 .sidebar-nav a {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px; /* Slightly larger icons */
-    height: 50px;
+    width: 55px; /* Larger icons */
+    height: 55px;
     color: #fff;
-    font-size: 1.6em; /* Slightly larger icon size */
+    font-size: 1.8em; /* Larger icon size */
     border-radius: 50%;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    text-shadow: 0 0 8px rgba(0,0,0,0.8); /* Stronger text shadow */
+    text-shadow: 0 0 10px rgba(0,0,0,0.8); /* Stronger text shadow */
     position: relative;
     overflow: hidden; /* For glow effect */
+    border: 1px solid transparent; /* Prepare for hover border */
 }
 
-.sidebar-nav a::before { /* Animated radial glow */
+.sidebar-nav a::before {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
     width: 0;
     height: 0;
-    background: radial-gradient(circle, rgba(76, 175, 80, 0.6) 0%, transparent 70%); /* Green glow */
+    background: radial-gradient(circle, rgba(0, 230, 118, 0.6) 0%, transparent 70%); /* Brighter green glow */
     border-radius: 50%;
     transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
     transform: translate(-50%, -50%);
@@ -126,30 +125,31 @@ a:hover {
 }
 
 .sidebar-nav a:hover {
-    background-color: rgba(76, 175, 80, 0.2); /* Muted green hover */
-    transform: scale(1.15); /* More pronounced scale */
-    box-shadow: 0 0 20px rgba(76, 175, 80, 0.8); /* Stronger green glow */
+    background-color: rgba(0, 230, 118, 0.25); /* Muted neon green hover */
+    transform: scale(1.2); /* More pronounced scale */
+    box-shadow: 0 0 25px rgba(0, 230, 118, 0.9), 0 0 40px rgba(0, 230, 118, 0.6); /* Stronger neon green glow */
+    border: 1px solid rgba(0, 230, 118, 0.5); /* Glowing border */
 }
 
 /* Tooltips for sidebar (pure CSS) */
 .sidebar-nav a[title]:hover::after {
     content: attr(title);
     position: absolute;
-    left: 70px; /* Adjusted position */
+    left: 75px; /* Adjusted position for larger icon */
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.85); /* Darker tooltip */
+    background: rgba(0, 0, 0, 0.95); /* Even darker tooltip */
     color: #fff;
-    padding: 7px 12px; /* Slightly larger padding */
-    border-radius: 8px; /* More rounded */
+    padding: 8px 15px; /* Larger padding */
+    border-radius: 10px; /* More rounded */
     white-space: nowrap;
-    font-size: 0.9em;
+    font-size: 1em;
     opacity: 1;
     pointer-events: none;
     transition: opacity 0.3s ease, left 0.3s ease;
     z-index: 101;
-    border: 1px solid rgba(255,255,255,0.1); /* Subtle border */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.2); /* Subtle border */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
 }
 
 
@@ -157,149 +157,66 @@ a:hover {
 .content-wrapper {
     position: relative;
     z-index: 1;
-    max-width: 1300px; /* Even wider content area */
-    margin: 40px auto; /* Center the wrapper horizontally */
-    margin-left: calc(20px + 50px + 30px); /* Sidebar left offset + sidebar width + desired gap (20px + 50px icon + 30px gap) */
-    padding: 0 30px; /* Overall internal padding */
+    max-width: 1400px; /* Even wider content area */
+    margin: 50px auto; /* Center the wrapper horizontally, more top/bottom margin */
+    /* Calculate left margin: sidebar's left (20px) + sidebar's width (55px) + desired gap (40px) */
+    margin-left: calc(20px + 55px + 40px);
+    padding: 0 40px; /* Overall internal padding */
     box-sizing: border-box;
-    /* Optional: Apply a subtle overall glassmorphism to the wrapper itself */
-    /* background: rgba(255, 255, 255, 0.02);
-    backdrop-filter: blur(5px);
-    border-radius: 20px;
-    box-shadow: 0 15px 60px rgba(0, 0, 0, 0.4); */
 }
 
 
 /* Section Styling (Glassmorphism applied to each section) */
 .section-content {
-    background: rgba(255, 255, 255, 0.06); /* Slightly more transparent glass */
-    backdrop-filter: blur(25px) saturate(1.8); /* Stronger blur, added saturate */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border */
-    border-radius: 20px; /* More rounded corners */
-    padding: 40px; /* More internal padding */
-    margin-bottom: 40px; /* More spacing between sections */
-    box-shadow: 0 15px 60px rgba(0, 0, 0, 0.4); /* Deeper, softer shadow */
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease; /* Smoother animation curve */
+    background: rgba(255, 255, 255, 0.05); /* Even more transparent glass */
+    backdrop-filter: blur(30px) saturate(2) brightness(1.1); /* STRONGER BLUR, more saturation, slight brightness */
+    border: 1px solid rgba(255, 255, 255, 0.15); /* Crisper, more visible border */
+    border-radius: 25px; /* More rounded corners */
+    padding: 50px; /* More internal padding */
+    margin-bottom: 50px; /* More spacing between sections */
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.02); /* Deeper outer, subtle inner shadow */
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease;
 }
 
 .section-content:hover {
-    transform: translateY(-8px); /* More pronounced lift */
-    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6); /* Even deeper shadow on hover */
+    transform: translateY(-10px); /* More pronounced lift */
+    box-shadow: 0 25px 100px rgba(0, 0, 0, 0.8); /* Even deeper shadow on hover */
 }
 
 
 header.section-content {
-    min-height: 90vh; /* Make header cover almost full height */
+    min-height: 95vh; /* Make header cover almost full height */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 60px 30px;
+    padding: 70px 40px;
     margin-top: 0;
 }
 
 
 header h1 {
-    font-size: 4.5em; /* Larger header text */
-    margin-bottom: 20px;
-    letter-spacing: 4px;
-    text-shadow: 0 0 25px rgba(76, 175, 80, 0.9), 0 0 40px rgba(76, 175, 80, 0.5); /* Stronger green glow */
+    font-size: 5em; /* Larger header text */
+    margin-bottom: 25px;
+    letter-spacing: 5px;
+    text-shadow: 0 0 30px rgba(0, 230, 118, 1), 0 0 50px rgba(0, 230, 118, 0.7); /* Intense neon green glow */
+    line-height: 1.1;
 }
 
 header p {
-    font-size: 1.8em; /* Larger tagline */
-    opacity: 0.95;
-    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    font-size: 2em; /* Larger tagline */
+    opacity: 0.98;
+    text-shadow: 0 0 15px rgba(0,0,0,0.6);
 }
 
 .scroll-down-arrow {
     position: absolute;
-    bottom: 40px;
+    bottom: 50px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 3em; /* Larger arrow */
-    color: #4CAF50; /* Green accent */
-    animation: bounce 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother bounce */
+    font-size: 3.5em; /* Larger arrow */
+    color: #00e676; /* Neon green accent */
+    animation: bounce 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
     cursor: pointer;
-    text-shadow: 0 0 15px rgba(76, 175, 80, 0.9);
-}
-
-/* Common Section Headers */
-section h2 {
-    font-size: 3.2em; /* Larger section titles */
-    text-align: center;
-    margin-bottom: 40px;
-    color: #4CAF50; /* Green accent */
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-shadow: 0 0 15px rgba(76, 175, 80, 0.7); /* Green glow */
-}
-
-section h3 {
-    font-size: 2em;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    color: #ffffff;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-}
-
-.section-content p, .section-content ul, .section-content ol {
-    font-size: 1.15em; /* Slightly larger text */
-    line-height: 1.9;
-    margin-bottom: 18px;
-    opacity: 0.9;
-}
-
-.section-content ul, .section-content ol {
-    margin-left: 35px;
-}
-
-.section-content li {
-    margin-bottom: 12px;
-}
-
-.note {
-    font-style: italic;
-    font-size: 1em;
-    color: #b0b0b0; /* Softer gray */
-    margin-top: 30px;
-    text-align: center;
-}
-
-/* Filament Type Sections (JS generated) */
-.filament-section {
-    background: rgba(255, 255, 255, 0.04); /* Even more transparent for sub-sections */
-    backdrop-filter: blur(15px); /* Sub-section blur */
-    padding: 30px;
-    margin-top: 25px;
-    border-radius: 15px;
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.15), 0 6px 20px rgba(0,0,0,0.4); /* Stronger inner/outer shadow */
-    border: 1px solid rgba(255, 255, 255, 0.08); /* Lighter border */
-}
-
-.filament-section h3 {
-    font-size: 1.8em;
-    color: #4CAF50; /* Green accent */
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-
-.filament-section p {
-    margin-bottom: 20px;
-}
-
-.filament-properties {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 25px; /* More space */
-    margin-top: 20px;
-    font-size: 1.05em;
-}
-
-.filament-properties span {
-    background: rgba(76, 175, 80, 0.15); /* Accent background for properties */
-    color: #fff;
-    padding: 12px 18px; /* More padding */
-    border-radius: 30px; /* More rounded */
-    display: inline
+    text-shadow: 0 0 20px rgba(0, 230, 118, 1), 0 0

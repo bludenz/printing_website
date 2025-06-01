@@ -3,39 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Printing Services - TurboDiesel Labs</title>
+    <title>TurboDiesel Labs - 3D Printing Services</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <div class="background-container">
-        <div class="parallax-bg" id="parallax-bg"></div>
+        <div id="parallax-bg" class="parallax-bg"></div>
         <div class="background-overlay"></div>
     </div>
 
     <nav class="sidebar-nav">
         <ul>
-            <li><a href="#top" title="Home"><i class="fas fa-home"></i></a></li>
+            <li><a href="#home" title="Home"><i class="fas fa-home"></i></a></li>
             <li><a href="#about" title="About Us"><i class="fas fa-info-circle"></i></a></li>
-            <li><a href="#filament-types" title="Filaments"><i class="fas fa-flask"></i></a></li>
+            <li><a href="#filament-types" title="Filament Types"><i class="fas fa-cube"></i></a></li>
             <li><a href="#pricing" title="Pricing"><i class="fas fa-dollar-sign"></i></a></li>
-            <li><a href="#how-to-order" title="Order"><i class="fas fa-shopping-cart"></i></a></li>
+            <li><a href="#contact" title="Contact Us"><i class="fas fa-envelope"></i></a></li>
+            <li><a href="#faq" title="FAQ"><i class="fas fa-question-circle"></i></a></li>
         </ul>
     </nav>
 
     <div class="content-wrapper">
-        <header id="top" class="section-content fade-in">
-            <div class="header-content">
-                <h1>TurboDiesel Labs - 3D Printing Services</h1>
-                <p>Bringing your ideas to life, one layer at a time.</p>
-                <div class="scroll-down-arrow">
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-            </div>
+        <header id="home" class="section-content fade-in">
+            <h1>TurboDiesel Labs - 3D<br>Printing Services</h1>
+            <p>Bringing your ideas to life, one layer at a time.</p>
+            <div class="scroll-down-arrow"><i class="fas fa-chevron-down"></i></div>
         </header>
 
         <section id="about" class="section-content fade-in">
-            <h2>About TurboDiesel Labs</h2>
+            <h2>About Us</h2>
             <p>Welcome to TurboDiesel Labs, where precision meets passion in 3D printing. Founded by Bludenz, a high-achieving student with a deep understanding of mechanics, CAD design, and innovative fabrication, we specialize in transforming digital concepts into tangible realities.</p>
             <p>Leveraging state-of-the-art 3D printing technology and a meticulous approach to every project, we're dedicated to delivering exceptional quality, whether it's a functional prototype, a custom replacement part, or a unique artistic creation. At TurboDiesel Labs, we're not just printing; we're building the future, one layer at a time.</p>
         </section>
@@ -43,50 +42,50 @@
         <section id="filament-types" class="section-content fade-in">
             <h2>Types of Filament</h2>
             <p>Choosing the right material is crucial for your print's success. Here are the primary filaments we offer, each with unique properties:</p>
-            
-            <div id="filament-sections-container">
-                <p>Loading filament details...</p> 
+            <div id="filament-sections-container" class="filament-grid-container">
+                <p style="text-align: center; color: #aaa;">Loading filament details...</p>
             </div>
+            <p class="note">If you have specific requirements or need a filament not listed, please contact us!</p>
         </section>
 
         <section id="pricing" class="section-content fade-in">
             <h2>Pricing Guide</h2>
-            <p>Our pricing is based on the material used, complexity of the print, and any required design or post-processing work. Below are the base prices per gram for our popular filaments:</p>
-            
+            <p>Our pricing is transparent and based on material usage and complexity. Below is a general guide for our base filament prices:</p>
             <div id="pricing-list-container">
-                <p>Loading pricing details...</p>
+                <p style="text-align: center; color: #aaa;">Loading pricing details...</p>
             </div>
-            <p class="note">Minimum order charges may apply. For custom design work or large/complex projects, we provide tailored quotes. Contact us for an accurate estimate.</p>
+            <p class="note">Final pricing will be provided after a detailed quote based on your specific 3D model and print settings.</p>
         </section>
 
-        <section id="how-to-order" class="section-content fade-in">
-            <h2>How to Find Models & Place an Order</h2>
-            <h3>Step 1: Finding Your Model</h3>
-            <p>You can find pre-designed 3D models on various online repositories. Some popular sites include:</p>
-            <ul>
-                <li>**Thingiverse:** A vast library of free, user-created designs.</li>
-                <li>**Printables:** Another excellent resource with a focus on printable designs and contests.</li>
-                <li>**MyMiniFactory:** Curated selection of high-quality 3D printable files.</li>
-                <li>**Cults 3D:** Features both free and paid designs, often for more niche or detailed models.</li>
-            </ul>
-            <p>When searching, look for models in common 3D printing file formats like **.STL** or **.OBJ**. Make sure the model is suitable for 3D printing and note its approximate dimensions if possible.</p>
-
-            <h3>Step 2: Placing Your Order</h3>
-            <p>Once you have your model (or a clear idea of what you want designed), placing an order with us is simple:</p>
-            <ol>
-                <li>**Contact Us:** Send an email to <a href="mailto:admin@bludenz.dev">admin@bludenz.dev</a> with your request.</li>
-                <li>**Attach Your Model:** If you have a file, attach it. If you need a custom design, describe your idea in detail.</li>
-                <li>**Specify Requirements:** Let us know your preferred filament type and color (refer to our list above), and any specific dimensions or strength requirements.</li>
-                <li>**Receive Your Quote:** We'll review your request and provide a detailed quote including material cost, print time, and any design fees.</li>
-                <li>**Approve & Print:** Once you approve the quote and make a payment, we'll start printing your design!</li>
-            </ol>
-            <p class="note">For custom designs, we'll work closely with you through the design process to ensure your vision is accurately captured before printing.</p>
+        <section id="contact" class="section-content fade-in">
+            <h2>Contact Us</h2>
+            <p>Ready to bring your ideas to life? Get in touch with us!</p>
+            <p>Email: <a href="mailto:info@turbodiesellabs.com">info@turbodiesellabs.com</a></p>
+            <p>Or find us on social media:</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
         </section>
 
-        <footer>
+        <section id="faq" class="section-content fade-in">
+            <h2>Frequently Asked Questions</h2>
+            <h3>What file formats do you accept?</h3>
+            <p>We primarily accept .STL, .OBJ, and .3MF files. If you have another format, please contact us to discuss compatibility.</p>
+
+            <h3>How long does a print take?</h3>
+            <p>Print times vary greatly depending on the model's size, complexity, chosen material, and desired print quality. We'll provide an estimated turnaround time with your quote.</p>
+
+            <h3>Can you help with design?</h3>
+            <p>While our primary service is printing, we can offer basic advice or recommend design resources if you need assistance with your model.</p>
+        </section>
+
+        <footer class="fade-in">
             <p>&copy; 2025 TurboDiesel Labs. All rights reserved.</p>
-            <p>Contact us: <a href="mailto:admin@bludenz.dev">admin@bludenz.dev</a></p>
         </footer>
-    </div> <script src="script.js"></script>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

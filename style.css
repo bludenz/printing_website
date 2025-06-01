@@ -14,7 +14,6 @@ body {
     line-height: 1.7;
     background-color: #1a1a1a; /* Very dark fallback background */
     position: relative; /* Establishes stacking context */
-    /* Remove display:flex on body if not explicitly used for direct children layout */
 }
 
 a {
@@ -59,7 +58,6 @@ a:hover {
     width: 100%;
     height: 100%;
     background-color: rgba(10, 10, 10, 0.8); /* Even darker, more opaque overlay */
-    /* backdrop-filter is applied to the content elements, not the overlay */
 }
 
 /* Sidebar Navigation */
@@ -219,4 +217,316 @@ header p {
     color: #00e676; /* Neon green accent */
     animation: bounce 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
     cursor: pointer;
-    text-shadow: 0 0 20px rgba(0, 230, 118, 1), 0 0
+    text-shadow: 0 0 20px rgba(0, 230, 118, 1), 0 0 30px rgba(0, 230, 118, 0.7);
+}
+
+/* Common Section Headers */
+section h2 {
+    font-size: 3.5em; /* Larger section titles */
+    text-align: center;
+    margin-bottom: 45px;
+    color: #00e676; /* Neon green accent */
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px rgba(0, 230, 118, 0.8); /* Neon green glow */
+}
+
+section h3 {
+    font-size: 2.2em;
+    margin-top: 35px;
+    margin-bottom: 25px;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+
+.section-content p, .section-content ul, .section-content ol {
+    font-size: 1.2em; /* Slightly larger text */
+    line-height: 2;
+    margin-bottom: 20px;
+    opacity: 0.95;
+}
+
+.section-content ul, .section-content ol {
+    margin-left: 40px;
+}
+
+.section-content li {
+    margin-bottom: 15px;
+}
+
+.note {
+    font-style: italic;
+    font-size: 1.05em;
+    color: #c0c0c0;
+    margin-top: 35px;
+    text-align: center;
+}
+
+/* Filament Types Section - Grid Layout */
+#filament-sections-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 1/4 layout, adapts to smaller screens */
+    gap: 30px; /* Space between grid items */
+    margin-top: 30px; /* Space from section heading */
+}
+
+.filament-item { /* Changed from .filament-section to .filament-item */
+    background: rgba(255, 255, 255, 0.03); /* Even more transparent for sub-sections */
+    backdrop-filter: blur(20px) saturate(1.5); /* Sub-section blur */
+    padding: 30px; /* Slightly less padding for smaller boxes */
+    border-radius: 20px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2), 0 8px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border */
+    display: flex; /* Enable flex for internal content alignment */
+    flex-direction: column; /* Stack content vertically */
+    justify-content: space-between; /* Push properties to bottom, stretch content */
+    height: 100%; /* Important for equal height in grid */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filament-item:hover {
+    transform: translateY(-5px);
+    box-shadow: inset 0 0 25px rgba(0,0,0,0.3), 0 12px 40px rgba(0,0,0,0.6);
+}
+
+.filament-item h3 {
+    font-size: 1.8em; /* Slightly smaller heading for grid items */
+    color: #00e676;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.filament-item p {
+    margin-bottom: 20px;
+    flex-grow: 1; /* Allows description to take up available space */
+}
+
+.filament-properties {
+    display: flex;
+    flex-direction: column; /* Stack properties vertically for better readability */
+    gap: 15px; /* Space between property lines */
+    margin-top: 20px;
+    font-size: 1.0em; /* Slightly smaller font for properties */
+}
+
+.filament-properties span {
+    background: rgba(0, 230, 118, 0.2);
+    color: #fff;
+    padding: 10px 15px; /* Adjusted padding */
+    border-radius: 25px; /* Slightly less rounded */
+    display: inline-flex;
+    align-items: center;
+    gap: 10px; /* Smaller gap for icons */
+    border: 1px solid rgba(0, 230, 118, 0.4);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+
+.filament-properties .colors-list {
+    flex-wrap: wrap; /* Allow colors to wrap */
+    gap: 8px; /* Gap between color boxes */
+}
+
+.color-box {
+    width: 22px; /* Smaller color swatch for better fit */
+    height: 22px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.5); /* Prominent border */
+    display: inline-block;
+    vertical-align: middle;
+    box-shadow: 0 0 6px rgba(0,0,0,0.4);
+    flex-shrink: 0; /* Prevent shrinking in flex container */
+}
+
+
+/* Pricing List Styling (JS generated) */
+.pricing-item {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(18px) saturate(1.5);
+    padding: 25px 35px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.15), 0 6px 25px rgba(0,0,0,0.4);
+    font-size: 1.4em;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pricing-item .price {
+    font-weight: bold;
+    color: #00e676;
+    font-size: 1.5em;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 50px 0;
+    margin-top: 70px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 1.1em;
+    color: #d0d0d0;
+    background: rgba(15, 15, 15, 0.95);
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+/* Scroll Reveal Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Keyframes for bounce animation */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) translateX(-50%);
+    }
+    40% {
+        transform: translateY(-20px) translateX(-50%);
+    }
+    60% {
+        transform: translateY(-10px) translateX(-50%);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .content-wrapper {
+        max-width: 1000px;
+    }
+    header h1 {
+        font-size: 4.5em;
+    }
+    section h2 {
+        font-size: 3em;
+    }
+    #filament-sections-container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust for 2-3 columns on smaller large screens */
+        gap: 25px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .content-wrapper {
+        margin-left: calc(15px + 55px + 25px);
+        padding: 0 30px;
+    }
+    .sidebar-nav {
+        left: 15px;
+    }
+    header h1 {
+        font-size: 3.8em;
+    }
+    section h2 {
+        font-size: 2.5em;
+    }
+    .section-content {
+        padding: 40px;
+    }
+    #filament-sections-container {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* More columns on medium screens */
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        margin: 0;
+        min-height: 100vh;
+    }
+    .sidebar-nav {
+        position: static;
+        transform: none;
+        width: calc(100% - 40px);
+        left: 0;
+        top: auto;
+        border-radius: 15px;
+        padding: 15px 0;
+        margin: 20px auto;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-nav ul {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .sidebar-nav li {
+        margin: 8px 12px;
+    }
+
+    .sidebar-nav a {
+        width: 45px;
+        height: 45px;
+        font-size: 1.5em;
+    }
+
+    .sidebar-nav a[title]:hover::after {
+        display: none;
+    }
+
+    .content-wrapper {
+        margin-left: auto;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    header.section-content {
+        min-height: 60vh;
+        padding: 40px 20px;
+    }
+
+    header h1 {
+        font-size: 2.5em;
+        letter-spacing: 1px;
+    }
+
+    header p {
+        font-size: 1.2em;
+    }
+
+    section h2 {
+        font-size: 2.2em;
+        letter-spacing: 1px;
+    }
+
+    section h3 {
+        font-size: 1.6em;
+    }
+
+    #filament-sections-container {
+        grid-template-columns: 1fr; /* Single column on small screens */
+        gap: 20px;
+    }
+
+    .filament-item {
+        width: 100%; /* Ensure full width */
+        box-sizing: border-box;
+    }
+
+    .filament-properties, .pricing-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .filament-properties span, .pricing-item {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* Adjustments for very small screens */
+@media

@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const mainSpoolColor = colors.length > 0 ? colors[0] : '#cccccc'; // Default to grey if no colors
 
                     // SVG for filament spool (simplified for clarity)
+                    // ENSURE THIS IS ENCLOSED IN BACKTICKS (`) FOR MULTI-LINE STRING
                     const spoolSvg = `
                         <svg class="filament-spool-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" style="color: ${mainSpoolColor};">
                             <path d="M20 50 C20 30 20 20 30 20 L70 20 C80 20 80 30 80 50 L80 50 C80 70 80 80 70 80 L30 80 C20 80 20 70 20 50 Z" fill="currentColor" opacity="0.9"></path>
@@ -130,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
 
 
+                    // NOTE: Added specific classes (filament-price, filament-hardness, filament-colors) here
                     sectionDiv.innerHTML = `
                         <div class="filament-spool-image">
                             ${spoolSvg}

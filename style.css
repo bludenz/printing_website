@@ -1,16 +1,16 @@
 /* General Body & Root Styling */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
-    background-color: #2e2e2e; /* Dark background */
-    color: #ffffff; /* White text */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #ffffff;
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    overflow-x: hidden; /* Prevent horizontal scroll from animations */
+    overflow-x: hidden;
+    background-color: #2e2e2e; /* Fallback for no JS or slow loading */
 }
 
 a {
-    color: #00bcd4; /* Accent color for links */
+    color: #00bcd4;
     text-decoration: none;
 }
 
@@ -18,113 +18,182 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Background Image & Overlay */
-.background-image {
+/* Background Image & Overlay (for Parallax) */
+.background-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('https://source.unsplash.com/random/1920x1080/?3d-printing,technology,abstract') no-repeat center center/cover; /* Dynamic random image */
-    filter: blur(5px); /* Soft blur effect */
+    overflow: hidden; /* Important for parallax */
+    z-index: -2;
+}
+
+.parallax-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Background image set by JS */
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px); /* More blur for the glassmorphism effect */
     transform: scale(1.05); /* Slightly scale for blur effect */
-    z-index: -2; /* Behind content */
-    opacity: 0.2; /* Subtle opacity */
+    transition: transform 0.1s ease-out; /* Smooth parallax movement */
 }
 
 .background-overlay {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #2e2e2e; /* Matches body background */
-    z-index: -1; /* Above image, below content */
-    opacity: 0.9; /* Makes image subtle */
+    background-color: rgba(46, 46, 46, 0.7); /* Darker, more opaque overlay */
+    backdrop-filter: blur(0px); /* Initially no blur, JS will apply it */
+    transition: backdrop-filter 0.5s ease;
 }
 
-/* Header Styling */
-header {
-    background-color: rgba(26, 26, 26, 0.9); /* Semi-transparent for overlay effect */
-    color: #ffffff;
-    padding: 80px 20px;
-    text-align: center;
-    border-bottom: 2px solid #00bcd4; /* Accent line */
-    position: relative; /* For scroll down arrow */
-    min-height: 100vh; /* Full viewport height for header */
+/* Sidebar Navigation */
+.sidebar-nav {
+    position: fixed;
+    left: 20px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1); /* Frosted glass background */
+    backdrop-filter: blur(10px); /* Glassmorphism blur */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 15px 10px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    z-index: 100; /* Ensure it's on top */
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    margin: 15px 0;
+}
+
+.sidebar-nav a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    color: #fff;
+    font-size: 1.5em;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+    position: relative; /* For tooltip */
+}
+
+.sidebar-nav a:hover {
+    background-color: rgba(0, 188, 212, 0.4); /* Accent hover */
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 188, 212, 0.6);
+}
+
+/* Tooltips for sidebar (pure CSS) */
+.sidebar-nav a[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    left: 60px; /* Position to the right of the icon */
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    font-size: 0.9em;
+    opacity: 1;
+    pointer-events: none; /* Allows clicks through the tooltip */
+    transition: opacity 0.3s ease, left 0.3s ease;
+    z-index: 101;
+}
+
+
+/* Main Content Wrapper (The "floating" UI) */
+.content-wrapper {
+    position: relative; /* For z-index */
+    z-index: 1;
+    max-width: 1200px; /* Wider content area */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 40px 20px 40px 100px; /* Adjust left padding for sidebar */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+
+/* Section Styling (Glassmorphism applied to each section) */
+.section-content {
+    background: rgba(255, 255, 255, 0.08); /* Frosted glass background */
+    backdrop-filter: blur(15px); /* Glassmorphism blur */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    padding: 35px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Stronger shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+}
+
+
+header.section-content { /* Header is now also a glassmorphism section */
+    min-height: 80vh; /* Adjust as needed */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-sizing: border-box; /* Include padding in height */
+    text-align: center;
+    padding: 50px 20px;
+    margin-top: 0; /* Remove top margin from default section */
 }
 
-.header-content {
-    max-width: 800px;
-}
 
 header h1 {
-    font-size: 3.5em;
-    margin-bottom: 10px;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    font-size: 3.8em;
+    margin-bottom: 15px;
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px rgba(0, 188, 212, 0.6); /* Glowing text */
 }
 
 header p {
-    font-size: 1.3em;
-    opacity: 0.8;
+    font-size: 1.5em;
+    opacity: 0.9;
 }
 
-/* Scroll Down Arrow */
 .scroll-down-arrow {
     position: absolute;
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 2em;
-    color: #00bcd4;
-    animation: bounce 2s infinite; /* Animation */
-    cursor: pointer;
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-10px);
-    }
-    60% {
-        transform: translateY(-5px);
-    }
-}
-
-
-/* Main Content Sections */
-main {
-    max-width: 1000px; /* Slightly wider main content */
-    margin: 40px auto;
-    padding: 0 20px;
-    position: relative; /* For z-index stacking */
-    z-index: 1; /* Ensure content is above background */
-}
-
-section {
-    background-color: rgba(58, 58, 58, 0.95); /* Semi-transparent for a modern feel */
-    padding: 30px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Stronger shadow */
-    overflow: hidden; /* For animations */
-}
-
-section h2 {
     font-size: 2.5em;
+    color: #00bcd4;
+    animation: bounce 2s infinite;
+    cursor: pointer;
+    text-shadow: 0 0 10px rgba(0, 188, 212, 0.8);
+}
+
+/* Common Section Headers */
+section h2 {
+    font-size: 2.8em;
     text-align: center;
-    margin-bottom: 25px;
-    color: #00bcd4; /* Accent color for main headings */
+    margin-bottom: 30px;
+    color: #00bcd4;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
 section h3 {
@@ -138,6 +207,7 @@ section h3 {
     font-size: 1.1em;
     line-height: 1.8;
     margin-bottom: 15px;
+    opacity: 0.9;
 }
 
 .section-content ul, .section-content ol {
@@ -158,21 +228,22 @@ section h3 {
 
 /* Filament Type Sections (JS generated) */
 .filament-section {
-    background-color: rgba(74, 74, 74, 0.9); /* Slightly different shade for sub-sections */
-    padding: 20px;
+    background: rgba(255, 255, 255, 0.05); /* Lighter glass for sub-sections */
+    padding: 25px;
     margin-top: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 4px 15px rgba(0,0,0,0.3); /* Subtle inner and outer shadow */
 }
 
 .filament-section h3 {
-    font-size: 1.5em;
+    font-size: 1.6em;
     color: #00bcd4;
     margin-top: 0;
+    margin-bottom: 10px;
 }
 
 .filament-section p {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .filament-properties {
@@ -180,102 +251,25 @@ section h3 {
     flex-wrap: wrap;
     gap: 20px;
     margin-top: 15px;
-    font-size: 0.95em;
+    font-size: 1em;
 }
 
 .filament-properties span {
-    background-color: rgba(90, 90, 90, 0.8);
-    padding: 8px 12px;
-    border-radius: 20px;
+    background: rgba(0, 188, 212, 0.1); /* Accent background for properties */
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 25px;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    border: 1px solid rgba(0, 188, 212, 0.3);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .color-box {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.4); /* More prominent border for colors */
     display: inline-block;
-    vertical-align: middle;
-}
-
-.color-name {
-    font-size: 0.9em;
-}
-
-/* Pricing List Styling (JS generated) */
-.pricing-item {
-    background-color: rgba(74, 74, 74, 0.9);
-    padding: 15px 20px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    font-size: 1.1em;
-}
-
-.pricing-item .price {
-    font-weight: bold;
-    color: #00bcd4;
-}
-
-/* Footer */
-footer {
-    text-align: center;
-    padding: 30px 0;
-    margin-top: 50px;
-    border-top: 1px solid #555;
-    font-size: 0.85em;
-    color: #bbb;
-    background-color: rgba(26, 26, 26, 0.9);
-}
-
-/* Scroll Reveal Animation (JS will add 'show' class) */
-.fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.fade-in.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 2.5em;
-    }
-
-    header p {
-        font-size: 1em;
-    }
-
-    section {
-        padding: 20px;
-    }
-
-    section h2 {
-        font-size: 2em;
-    }
-
-    section h3 {
-        font-size: 1.5em;
-    }
-
-    .filament-properties {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .pricing-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-}
+    vertical-align:

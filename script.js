@@ -115,27 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         return `<span class="color-box" style="background-color: ${colorHex};" title="${colorHex}"></span>`;
                     }).join('');
 
-                    // Determine the main color for the SVG spool
-                    const mainSpoolColor = colors.length > 0 ? colors[0] : '#cccccc'; // Default to grey if no colors
-
-                    // SVG for filament spool (simplified for clarity)
-                    // ENSURE THIS IS ENCLOSED IN BACKTICKS (`) FOR MULTI-LINE STRING
-                    const spoolSvg = `
-                        <svg class="filament-spool-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" style="color: ${mainSpoolColor};">
-                            <path d="M20 50 C20 30 20 20 30 20 L70 20 C80 20 80 30 80 50 L80 50 C80 70 80 80 70 80 L30 80 C20 80 20 70 20 50 Z" fill="currentColor" opacity="0.9"></path>
-                            <path d="M78 50 C78 30 78 20 68 20 L28 20 C18 20 18 30 18 50 L18 50 C18 70 18 80 28 80 L68 80 C78 80 78 70 78 50 Z" fill="currentColor" opacity="0.9" transform="translate(4,0)"></path>
-                            <rect x="26" y="40" width="48" height="20" rx="5" ry="5" fill="#333" stroke="#222" stroke-width="1.5" opacity="0.8"></rect>
-                            <circle cx="50" cy="50" r="10" fill="#222" stroke="#111" stroke-width="1.5" opacity="0.9"></circle>
-                            <ellipse cx="50" cy="45" rx="15" ry="5" fill="white" opacity="0.25"></ellipse>
-                        </svg>
-                    `;
-
-
-                    // NOTE: Added specific classes (filament-price, filament-hardness, filament-colors) here
                     sectionDiv.innerHTML = `
-                        <div class="filament-spool-image">
-                            ${spoolSvg}
-                        </div>
                         <h3>${filament.name}</h3>
                         <p>${filament.description}</p>
                         <div class="filament-properties">

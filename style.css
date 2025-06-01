@@ -1,3 +1,330 @@
+/* General Body & Root Styling */
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    /* Define CSS variables based on glassiness_strength */
+    --glassiness-strength: 1.0; /* Default value, will be set by JS */
+    /* Base values for blur and saturation before scaling */
+    --base-blur-px: 25; /* Use unit-less for calc */
+    --base-saturate: 1.8;
+    --base-brightness: 1.2;
+
+    /* Scaled variables for glassmorphism effects (simplified calc) */
+    --scaled-blur: calc(var(--glassiness-strength) * var(--base-blur-px) * 1px); /* Multiply by 1px to get units */
+    --scaled-saturate: calc(var(--glassiness-strength) * var(--base-saturate));
+    --scaled-brightness: calc(1.0 + (var(--glassiness-strength) - 1.0) * 0.2);
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #e0e0e0;
+    line-height: 1.7;
+    background-color: #1a1a1a;
+    position: relative;
+}
+
+a {
+    color: #00e676;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #69f0ae;
+    text-decoration: underline;
+}
+
+/* Background Image & Overlay (for Parallax) */
+.background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -2;
+}
+
+.parallax-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px) brightness(0.8);
+    transform: scale(1.15);
+    transition: transform 0.1s ease-out;
+}
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 10, 10, 0.8);
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(var(--scaled-blur)) saturate(var(--scaled-saturate)) brightness(var(--scaled-brightness)); /* Uses scaled variables */
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 30px;
+    padding: 15px 10px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255,255,255,0.05);
+    z-index: 100;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    margin: 20px 0;
+}
+
+.sidebar-nav a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 55px;
+    height: 55px;
+    color: #fff;
+    font-size: 1.8em;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    text-shadow: 0 0 10px rgba(0,0,0,0.8);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+}
+
+/* Sidebar Active State */
+.sidebar-nav a.active {
+    background-color: rgba(0, 230, 118, 0.35);
+    transform: scale(1.15);
+    box-shadow: 0 0 25px rgba(0, 230, 118, 1), 0 0 40px rgba(0, 230, 118, 0.8);
+    border-color: rgba(0, 230, 118, 0.8);
+}
+
+.sidebar-nav a::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(0, 230, 118, 0.6) 0%, transparent 70%);
+    border-radius: 50%;
+    transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    z-index: -1;
+}
+
+.sidebar-nav a:hover::before {
+    width: 120%;
+    height: 120%;
+    opacity: 1;
+}
+
+.sidebar-nav a:hover:not(.active) {
+    background-color: rgba(0, 230, 118, 0.25);
+    transform: scale(1.2);
+    box-shadow: 0 0 25px rgba(0, 230, 118, 0.9), 0 0 40px rgba(0, 230, 118, 0.6);
+    border: 1px solid rgba(0, 230, 118, 0.5);
+}
+
+/* Tooltips for sidebar (pure CSS) */
+.sidebar-nav a[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    left: 75px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.95);
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 10px;
+    white-space: nowrap;
+    font-size: 1em;
+    opacity: 1;
+    pointer-events: none;
+    transition: opacity 0.3s ease, left 0.3s ease;
+    z-index: 101;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+}
+
+
+/* Main Content Wrapper (The "floating" UI) */
+.content-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1700px; /* Further increased max-width for 4 columns */
+    margin: 50px auto; /* This centers it horizontally */
+    padding: 0 40px; /* Overall internal padding */
+    padding-left: calc(20px + 55px + 40px + 40px); /* Add sidebar width + gap + desired internal padding */
+    box-sizing: border-box;
+}
+
+
+/* Section Styling (Glassmorphism applied to each section) */
+.section-content {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(var(--scaled-blur)) saturate(var(--scaled-saturate)) brightness(var(--scaled-brightness)); /* Uses scaled variables */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 25px;
+    padding: 50px;
+    margin-bottom: 50px;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.02);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease;
+}
+
+.section-content:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 100px rgba(0, 0, 0, 0.8);
+}
+
+
+header.section-content {
+    min-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 70px 40px;
+    margin-top: 0;
+}
+
+
+header h1 {
+    font-size: 5em;
+    margin-bottom: 25px;
+    letter-spacing: 5px;
+    text-shadow: 0 0 30px rgba(0, 230, 118, 1), 0 0 50px rgba(0, 230, 118, 0.7);
+    line-height: 1.1;
+}
+
+header p {
+    font-size: 2em;
+    opacity: 0.98;
+    text-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+
+.scroll-down-arrow {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3.5em;
+    color: #00e676;
+    animation: bounce 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+    text-shadow: 0 0 20px rgba(0, 230, 118, 1), 0 0 30px rgba(0, 230, 118, 0.7);
+}
+
+/* Common Section Headers */
+section h2 {
+    font-size: 3.5em;
+    text-align: center;
+    margin-bottom: 45px;
+    color: #00e676;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px rgba(0, 230, 118, 0.8);
+}
+
+section h3 {
+    font-size: 2.2em;
+    margin-top: 35px;
+    margin-bottom: 25px;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+
+.section-content p, .section-content ul, .section-content ol {
+    font-size: 1.2em;
+    line-height: 2;
+    margin-bottom: 20px;
+    opacity: 0.95;
+}
+
+.section-content ul, .section-content ol {
+    margin-left: 40px;
+}
+
+.section-content li {
+    margin-bottom: 15px;
+}
+
+.note {
+    font-style: italic;
+    font-size: 1.05em;
+    color: #c0c0c0;
+    margin-top: 35px;
+    text-align: center;
+}
+
+/* Filament Types Section - Grid Layout */
+#filament-sections-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Explicitly 4 columns */
+    gap: 30px;
+    margin-top: 30px;
+    align-items: stretch; /* Ensure grid items stretch to fill available height */
+}
+
+.filament-item {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(calc(var(--glassiness-strength) * 20px)) saturate(calc(var(--glassiness-strength) * 1.5)); /* Uses variables */
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2), 0 8px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribute space vertically */
+    height: 100%; /* Ensure all items take full height of grid row */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box; /* Include padding/border in height */
+}
+
+.filament-item:hover {
+    transform: translateY(-5px);
+    box-shadow: inset 0 0 25px rgba(0,0,0,0.3), 0 12px 40px rgba(0,0,0,0.6);
+}
+
+.filament-item h3 {
+    font-size: 1.8em;
+    color: #00e676;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center; /* Center filament type titles */
+    white-space: nowrap; /* Prevent title from wrapping */
+    overflow: hidden; /* Hide overflow if nowrap causes issues */
+    text-overflow: ellipsis; /* Add ellipsis if title is too long */
+}
+
+.filament-item p {
+    margin-bottom: 20px;
+    flex-grow: 1; /* Allow description to take available space */
+}
+
 .filament-properties {
     display: grid; /* Use grid for row-based alignment */
     grid-template-columns: 1fr; /* Single column layout for the items themselves */
@@ -8,7 +335,7 @@
     flex-shrink: 0;
 }
 
-.filament-properties .filament-property-item {
+.filament-properties .filament-property-item { /* New class for individual green boxes */
     background: rgba(0, 230, 118, 0.2);
     color: #fff;
     padding: 10px 15px;
@@ -20,34 +347,26 @@
     box-shadow: 0 3px 10px rgba(0,0,0,0.3);
     box-sizing: border-box;
     justify-content: flex-start;
-    /* Removed height constraints */
+    /* Removed height constraints, grid-template-rows handles this */
 }
 
-/* Target the Price element to be in the first row */
-.filament-properties .filament-property-item:nth-child(1) {
-    /* grid-row: 1; Implicitly placed in the first row */
-}
+/* No need for explicit grid-row assignments, they will be implicitly placed
+   in the order they appear in HTML into the grid-template-rows */
 
-/* Target the Hardness element to be in the second row */
-.filament-properties .filament-property-item:nth-child(2) {
-    /* grid-row: 2; Implicitly placed in the second row */
-}
-
-/* Target the Colors element to be in the third row */
 .filament-properties .colors-list {
-    /* grid-row: 3; Implicitly placed in the third row */
-    flex-direction: column;
+    flex-direction: column; /* Stack "Colors:" text and color boxes */
     align-items: flex-start;
     padding-bottom: 10px;
-    /* Height will adjust based on content */
+    /* Height will adjust based on content due to 1fr row */
 }
 
 .filament-properties .colors-list i {
     margin-right: 0;
 }
 
-.colors-list > .color-boxes-wrapper {
-    margin-top: 5px;
+/* Ensure "Colors:" text and color boxes are separated */
+.colors-list > .color-boxes-wrapper { /* Target the wrapper directly */
+    margin-top: 5px; /* Space between "Colors:" text and boxes */
 }
 
 .color-boxes-wrapper {
@@ -58,6 +377,7 @@
     width: 100%;
 }
 
+
 .color-box {
     width: 22px;
     height: 22px;
@@ -66,4 +386,196 @@
     display: block;
     box-shadow: 0 0 6px rgba(0,0,0,0.4);
     flex-shrink: 0;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 50px 0;
+    margin-top: 70px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 1.1em;
+    color: #d0d0d0;
+    background: rgba(15, 15, 15, 0.95);
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+/* Scroll Reveal Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Keyframes for bounce animation */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) translateX(-50%);
+    }
+    40% {
+        transform: translateY(-20px) translateX(-50%);
+    }
+    60% {
+        transform: translateY(-10px) translateX(-50%);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1750px) { /* Adjust for smaller screens where 4 columns might break */
+    #filament-sections-container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Revert to auto-fit for flexibility on slightly smaller wide screens */
+    }
+}
+
+@media (max-width: 1200px) {
+    .content-wrapper {
+        max-width: 1000px;
+        padding-left: calc(20px + 55px + 40px + 30px); /* Adjust padding for smaller screens */
+    }
+    header h1 {
+        font-size: 4.5em;
+    }
+    section h2 {
+        font-size: 3em;
+    }
+    #filament-sections-container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .content-wrapper {
+        max-width: 900px; /* Adjust max-width */
+        padding-left: calc(15px + 55px + 25px + 30px); /* Adjust padding for smaller screens */
+        padding-right: 30px; /* Ensure right padding is consistent */
+    }
+    .sidebar-nav {
+        left: 15px;
+    }
+    header h1 {
+        font-size: 3.8em;
+    }
+    section h2 {
+        font-size: 2.5em;
+    }
+    .section-content {
+        padding: 40px;
+    }
+    #filament-sections-container {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        margin: 0;
+        min-height: 100vh;
+    }
+    .sidebar-nav {
+        position: static; /* Make sidebar static on small screens */
+        transform: none;
+        width: calc(100% - 40px);
+        left: 0;
+        top: auto;
+        border-radius: 15px;
+        padding: 15px 0;
+        margin: 20px auto; /* Center static sidebar */
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(var(--scaled-blur)) saturate(var(--scaled-saturate)) brightness(var(--scaled-brightness)); /* Uses scaled variables */
+    }
+
+    .sidebar-nav ul {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .sidebar-nav li {
+        margin: 8px 12px;
+    }
+
+    .sidebar-nav a {
+        width: 45px;
+        height: 45px;
+        font-size: 1.5em;
+    }
+
+    .sidebar-nav a[title]:hover::after {
+        display: none;
+    }
+
+    .content-wrapper {
+        margin-left: auto; /* Re-center after sidebar becomes static */
+        padding: 20px;
+        margin-top: 20px;
+        padding-left: 20px; /* Reset padding for mobile */
+    }
+
+    header.section-content {
+        min-height: 60vh;
+        padding: 40px 20px;
+    }
+
+    header h1 {
+        font-size: 2.5em;
+        letter-spacing: 1px;
+    }
+
+    header p {
+        font-size: 1.2em;
+    }
+
+    section h2 {
+        font-size: 2.2em;
+        letter-spacing: 1px;
+    }
+
+    section h3 {
+        font-size: 1.6em;
+    }
+
+    #filament-sections-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .filament-item {
+        width: 100%;
+        box-sizing: border-box;
+        backdrop-filter: blur(calc(var(--glassiness-strength) * 20px)) saturate(calc(var(--glassiness-strength) * 1.5)); /* Uses variables */
+    }
+
+    .filament-properties {
+        flex-direction: column; /* Ensure proper stacking on small screens */
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .filament-properties .filament-property-item {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* Adjustments for very small screens */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 2em;
+    }
+    section h2 {
+        font-size: 1.8em;
+    }
+    .sidebar-nav ul {
+        justify-content: center;
+    }
 }

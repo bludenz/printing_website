@@ -1,0 +1,22 @@
+[
+    {
+        "name": "PLA",
+        "base_price_per_gram": 0.10,
+        "colors": ["White", "Black", "Grey", "Red", "Blue", "Green", "Yellow", "Natural"]
+    },
+    {
+        "name": "PETG",
+        "base_price_per_gram": 0.12,
+        "colors": ["Clear", "Black", "White", "Blue"]
+    },
+    {
+        "name": "ABS",
+        "base_price_per_gram": 0.18,
+        "colors": ["Black"]
+    },
+  {
+        "name": "ASA",
+        "base_price_per_gram": 0.18,
+        "colors": ["Teal"]
+    }
+]

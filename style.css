@@ -174,7 +174,7 @@ a:hover {
 .content-wrapper {
     position: relative;
     z-index: 1;
-    max-width: 1400px;
+    max-width: 1600px; /* Increased max-width to accommodate 4 columns */
     margin: 50px auto; /* This centers it horizontally */
     padding: 0 40px; /* Overall internal padding */
     padding-left: calc(20px + 55px + 40px + 40px); /* Add sidebar width + gap + desired internal padding */
@@ -283,7 +283,7 @@ section h3 {
 /* Filament Types Section - Grid Layout */
 #filament-sections-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(4, 1fr); /* Changed to 4 columns */
     gap: 30px;
     margin-top: 30px;
 }
@@ -297,8 +297,8 @@ section h3 {
     border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+    justify-content: space-between; /* Distribute space vertically */
+    height: 100%; /* Ensure all items take full height of grid row */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -312,19 +312,23 @@ section h3 {
     color: #00e676;
     margin-top: 0;
     margin-bottom: 15px;
+    text-align: center; /* Center filament type titles */
 }
 
 .filament-item p {
     margin-bottom: 20px;
-    flex-grow: 1;
+    flex-grow: 1; /* Allow description to take available space */
 }
 
 .filament-properties {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: grid; /* Changed to grid for better alignment control */
+    grid-template-columns: 1fr; /* Stack items vertically */
+    gap: 15px; /* Gap between property rows */
     margin-top: 20px;
     font-size: 1.0em;
+    /* Ensure properties are aligned at the bottom or are equal height */
+    align-content: end; /* Aligns content to the end of the grid container */
+    flex-grow: 0; /* Prevents this section from growing to ensure description pushes it down */
 }
 
 .filament-properties span {
@@ -333,16 +337,21 @@ section h3 {
     padding: 10px 15px;
     border-radius: 25px;
     display: flex;
-    align-items: center;
+    align-items: center; /* Vertically center icon and text */
     gap: 10px;
     border: 1px solid rgba(0, 230, 118, 0.4);
     box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    height: 50px; /* Fixed height for consistent alignment */
+    justify-content: flex-start; /* Align text to the start */
+    box-sizing: border-box; /* Include padding and border in the height */
 }
 
 .filament-properties .colors-list {
     flex-direction: column;
     align-items: flex-start;
     padding-bottom: 10px;
+    height: auto; /* Let height adjust for colors */
+    min-height: 50px; /* Ensure minimum height */
 }
 
 .filament-properties .colors-list i {
@@ -374,27 +383,9 @@ section h3 {
 }
 
 
-/* Pricing List Styling (JS generated) */
-.pricing-item {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(calc(var(--glassiness-strength) * 18px)) saturate(calc(var(--glassiness-strength) * 1.5)); /* Uses variables */
-    padding: 25px 35px;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: inset 0 0 12px rgba(0,0,0,0.15), 0 6px 25px rgba(0,0,0,0.4);
-    font-size: 1.4em;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
+/* Pricing List Styling (removed, but keeping the class for safety in case it's added back) */
+/* .pricing-item { ... } */
 
-.pricing-item .price {
-    font-weight: bold;
-    color: #00e676;
-    font-size: 1.5em;
-    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-}
 
 /* Footer */
 footer {
@@ -435,6 +426,12 @@ footer {
 }
 
 /* Responsive Adjustments */
+@media (max-width: 1650px) { /* Adjust for smaller screens where 4 columns might break */
+    #filament-sections-container {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Revert to auto-fit for flexibility */
+    }
+}
+
 @media (max-width: 1200px) {
     .content-wrapper {
         max-width: 1000px;
@@ -557,19 +554,15 @@ footer {
         backdrop-filter: blur(calc(var(--glassiness-strength) * 20px)) saturate(calc(var(--glassiness-strength) * 1.5)); /* Uses variables */
     }
 
-    .filament-properties, .pricing-item {
-        flex-direction: column;
+    .filament-properties {
+        flex-direction: column; /* Ensure proper stacking on small screens */
         align-items: flex-start;
         gap: 15px;
     }
 
-    .filament-properties span, .pricing-item {
+    .filament-properties span {
         width: 100%;
         box-sizing: border-box;
-    }
-
-    .pricing-item {
-        backdrop-filter: blur(calc(var(--glassiness-strength) * 18px)) saturate(calc(var(--glassiness-strength) * 1.5)); /* Uses variables */
     }
 }
 

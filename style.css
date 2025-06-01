@@ -402,4 +402,177 @@ footer {
 .fade-in {
     opacity: 0;
     transform: translateY(50px);
-    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1.2s cubic-bezier(0.25, 0.46, 0.45,
+    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Keyframes for bounce animation */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) translateX(-50%);
+    }
+    40% {
+        transform: translateY(-20px) translateX(-50%);
+    }
+    60% {
+        transform: translateY(-10px) translateX(-50%);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1750px) { /* Adjust for smaller screens where 4 columns might break */
+    #filament-sections-container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Revert to auto-fit for flexibility on slightly smaller wide screens */
+    }
+}
+
+@media (max-width: 1200px) {
+    .content-wrapper {
+        max-width: 1000px;
+        padding-left: calc(20px + 55px + 40px + 30px); /* Adjust padding for smaller screens */
+    }
+    header h1 {
+        font-size: 4.5em;
+    }
+    section h2 {
+        font-size: 3em;
+    }
+    #filament-sections-container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .content-wrapper {
+        max-width: 900px; /* Adjust max-width */
+        padding-left: calc(15px + 55px + 25px + 30px); /* Adjust padding for smaller screens */
+        padding-right: 30px; /* Ensure right padding is consistent */
+    }
+    .sidebar-nav {
+        left: 15px;
+    }
+    header h1 {
+        font-size: 3.8em;
+    }
+    section h2 {
+        font-size: 2.5em;
+    }
+    .section-content {
+        padding: 40px;
+    }
+    #filament-sections-container {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        margin: 0;
+        min-height: 100vh;
+    }
+    .sidebar-nav {
+        position: static; /* Make sidebar static on small screens */
+        transform: none;
+        width: calc(100% - 40px);
+        left: 0;
+        top: auto;
+        border-radius: 15px;
+        padding: 15px 0;
+        margin: 20px auto; /* Center static sidebar */
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(var(--scaled-blur)) saturate(var(--scaled-saturate)) brightness(var(--scaled-brightness)); /* Uses scaled variables */
+    }
+
+    .sidebar-nav ul {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .sidebar-nav li {
+        margin: 8px 12px;
+    }
+
+    .sidebar-nav a {
+        width: 45px;
+        height: 45px;
+        font-size: 1.5em;
+    }
+
+    .sidebar-nav a[title]:hover::after {
+        display: none;
+    }
+
+    .content-wrapper {
+        margin-left: auto; /* Re-center after sidebar becomes static */
+        padding: 20px;
+        margin-top: 20px;
+        padding-left: 20px; /* Reset padding for mobile */
+    }
+
+    header.section-content {
+        min-height: 60vh;
+        padding: 40px 20px;
+    }
+
+    header h1 {
+        font-size: 2.5em;
+        letter-spacing: 1px;
+    }
+
+    header p {
+        font-size: 1.2em;
+    }
+
+    section h2 {
+        font-size: 2.2em;
+        letter-spacing: 1px;
+    }
+
+    section h3 {
+        font-size: 1.6em;
+    }
+
+    #filament-sections-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .filament-item {
+        width: 100%;
+        box-sizing: border-box;
+        backdrop-filter: blur(calc(var(--glassiness-strength) * 20px)) saturate(calc(var(--glassiness-strength) * 1.5)); /* Uses variables */
+    }
+
+    .filament-properties {
+        flex-direction: column; /* Ensure proper stacking on small screens */
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .filament-properties .filament-property-item {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* Adjustments for very small screens */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 2em;
+    }
+    section h2 {
+        font-size: 1.8em;
+    }
+    .sidebar-nav ul {
+        justify-content: center;
+    }
+}

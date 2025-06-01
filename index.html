@@ -5,30 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Printing Services - TurboDiesel Labs</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <header>
-        <h1>TurboDiesel Labs - 3D Printing Services</h1>
-        <p>Bringing your ideas to life, one layer at a time.</p>
+    <div class="background-overlay"></div>
+    <div class="background-image"></div>
+
+    <header class="fade-in">
+        <div class="header-content">
+            <h1>TurboDiesel Labs - 3D Printing Services</h1>
+            <p>Bringing your ideas to life, one layer at a time.</p>
+            <div class="scroll-down-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
     </header>
 
     <main>
-        <section id="services">
-            <h2>Our Services</h2>
-            <p>We offer high-quality 3D printing for prototypes, custom parts, functional items, and unique creations. Whether you have a ready-to-print model or just an idea, we can help.</p>
-
-            <h3>Filament Options & Pricing</h3>
-            <p>Our base pricing is per gram of material, with additional costs for complex designs or extensive post-processing. See our popular filament options below:</p>
-            
-            <div id="filament-list">
-                <p>Loading filament options...</p> 
+        <section id="about" class="fade-in">
+            <h2>About TurboDiesel Labs</h2>
+            <div class="section-content">
+                <p>Welcome to TurboDiesel Labs, where precision meets passion in 3D printing. Founded by Bludenz, a high-achieving student with a deep understanding of mechanics, CAD design, and innovative fabrication, we specialize in transforming digital concepts into tangible realities.</p>
+                <p>Leveraging state-of-the-art 3D printing technology and a meticulous approach to every project, we're dedicated to delivering exceptional quality, whether it's a functional prototype, a custom replacement part, or a unique artistic creation. At TurboDiesel Labs, we're not just printing; we're building the future, one layer at a time.</p>
             </div>
-            <p class="note">Minimum order charges may apply. Contact us for a custom quote on large or complex projects.</p>
         </section>
 
-        <hr> <section id="how-to-order">
+        <section id="filament-types" class="fade-in">
+            <h2>Types of Filament</h2>
+            <p>Choosing the right material is crucial for your print's success. Here are the primary filaments we offer, each with unique properties:</p>
+            
+            <div id="filament-sections-container">
+                <p>Loading filament details...</p> 
+            </div>
+        </section>
+
+        <section id="pricing" class="fade-in">
+            <h2>Pricing Guide</h2>
+            <p>Our pricing is based on the material used, complexity of the print, and any required design or post-processing work. Below are the base prices per gram for our popular filaments:</p>
+            
+            <div id="pricing-list-container">
+                <p>Loading pricing details...</p>
+            </div>
+            <p class="note">Minimum order charges may apply. For custom design work or large/complex projects, we provide tailored quotes. Contact us for an accurate estimate.</p>
+        </section>
+
+        <section id="how-to-order" class="fade-in">
             <h2>How to Find Models & Place an Order</h2>
-            <div class="guide-content">
+            <div class="section-content">
                 <h3>Step 1: Finding Your Model</h3>
                 <p>You can find pre-designed 3D models on various online repositories. Some popular sites include:</p>
                 <ul>
@@ -42,7 +65,7 @@
                 <h3>Step 2: Placing Your Order</h3>
                 <p>Once you have your model (or a clear idea of what you want designed), placing an order with us is simple:</p>
                 <ol>
-                    <li>**Contact Us:** Send an email to [Your Business Email Address] with your request.</li>
+                    <li>**Contact Us:** Send an email to <a href="mailto:admin@bludenz.dev">admin@bludenz.dev</a> with your request.</li>
                     <li>**Attach Your Model:** If you have a file, attach it. If you need a custom design, describe your idea in detail.</li>
                     <li>**Specify Requirements:** Let us know your preferred filament type and color (refer to our list above), and any specific dimensions or strength requirements.</li>
                     <li>**Receive Your Quote:** We'll review your request and provide a detailed quote including material cost, print time, and any design fees.</li>
@@ -55,7 +78,7 @@
 
     <footer>
         <p>&copy; 2025 TurboDiesel Labs. All rights reserved.</p>
-        <p>Contact us: admin@bludenz.dev</p>
+        <p>Contact us: <a href="mailto:admin@bludenz.dev">admin@bludenz.dev</a></p>
     </footer>
 
     <script src="script.js"></script>

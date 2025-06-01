@@ -20,11 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(filaments => {
+            // Updated variable names to match new HTML IDs
             const filamentSectionsContainer = document.getElementById('filament-sections-container');
             const pricingListContainer = document.getElementById('pricing-list-container');
             
             // Crucial: Check if elements exist before trying to manipulate them
-            // This is the fix for "null" errors
             if (filamentSectionsContainer) {
                 filamentSectionsContainer.innerHTML = ''; // Clear "Loading..." message
             }

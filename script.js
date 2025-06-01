@@ -3,45 +3,68 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollDownArrow = document.querySelector('.scroll-down-arrow');
     if (scrollDownArrow) {
         scrollDownArrow.addEventListener('click', () => {
-            window.scrollBy({
-                top: window.innerHeight, // Scrolls down by the height of the viewport
-                behavior: 'smooth'
-            });
+            // Find the next section or scroll a fixed amount
+            const firstSection = document.querySelector('main section');
+            if (firstSection) {
+                firstSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+            }
         });
     }
+
+    // --- Sidebar Navigation Smooth Scrolling ---
+    const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default hash jump
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start' // Scroll to the top of the element
+                });
+            }
+        });
+    });
 
     // --- Filament Data Loading & Display ---
     fetch('filaments.json')
         .then(response => {
             if (!response.ok) {
-                // If it's a 404, log the error and provide user feedback
                 throw new Error(`HTTP error! status: ${response.status} - Failed to load filaments.json. Please ensure the file exists in the same directory and you are running a local server for development.`);
             }
             return response.json();
         })
-        .then(filaments => {
-            // Updated variable names to match new HTML IDs
+        .then(data => {
+            // Set background image from JSON
+            const parallaxBg = document.getElementById('parallax-bg');
+            if (parallaxBg && data.background_image) {
+                parallaxBg.style.backgroundImage = `url('${data.background_image}')`;
+            }
+
+            const filaments = data.filaments; // Access the filaments array from the data object
+
             const filamentSectionsContainer = document.getElementById('filament-sections-container');
             const pricingListContainer = document.getElementById('pricing-list-container');
             
-            // Crucial: Check if elements exist before trying to manipulate them
             if (filamentSectionsContainer) {
-                filamentSectionsContainer.innerHTML = ''; // Clear "Loading..." message
+                filamentSectionsContainer.innerHTML = '';
             }
             if (pricingListContainer) {
-                pricingListContainer.innerHTML = ''; // Clear "Loading..." message
+                pricingListContainer.innerHTML = '';
             }
 
             filaments.forEach(filament => {
                 // Create Filament Type Section
-                if (filamentSectionsContainer) { // Only proceed if the container exists
+                if (filamentSectionsContainer) {
                     const sectionDiv = document.createElement('div');
                     sectionDiv.classList.add('filament-section');
-                    sectionDiv.id = filament.id; // Assign ID for potential navigation later
+                    sectionDiv.id = filament.id;
 
                     const colorsHtml = filament.colors.map(colorHex => {
-                        // Using hex codes directly for background-color
-                        return `<span class="color-box" style="background-color: ${colorHex};" title="${colorHex}"></span>`; // Added title for hover info
+                        return `<span class="color-box" style="background-color: ${colorHex};" title="${colorHex}"></span>`;
                     }).join('');
 
                     sectionDiv.innerHTML = `
@@ -57,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 // Create Pricing List Item
-                if (pricingListContainer) { // Only proceed if the container exists
+                if (pricingListContainer) {
                     const pricingItem = document.createElement('div');
                     pricingItem.classList.add('pricing-item');
                     pricingItem.innerHTML = `
@@ -72,16 +95,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const sections = document.querySelectorAll('.fade-in');
 
             const observerOptions = {
-                root: null, // relative to the viewport
+                root: null,
                 rootMargin: '0px',
-                threshold: 0.1 // Trigger when 10% of the element is visible
+                threshold: 0.1
             };
 
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('show');
-                        observer.unobserve(entry.target); // Stop observing once shown
+                        observer.unobserve(entry.target);
                     }
                 });
             }, observerOptions);
@@ -89,6 +112,16 @@ document.addEventListener('DOMContentLoaded', () => {
             sections.forEach(section => {
                 observer.observe(section);
             });
+
+            // --- Parallax Effect ---
+            const parallaxBg = document.getElementById('parallax-bg');
+            if (parallaxBg) {
+                window.addEventListener('scroll', () => {
+                    const scrollPosition = window.pageYOffset;
+                    // Adjust the multiplier for more or less parallax effect
+                    parallaxBg.style.transform = `scale(1.05) translateY(${scrollPosition * 0.3}px)`; // 0.3 is the parallax speed
+                });
+            }
 
         })
         .catch(error => {

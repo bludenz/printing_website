@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const accentColorInput = document.getElementById('accent-color');     // NEW
     const propertyBoxColorInput = document.getElementById('property-box-color'); // NEW
 
-    // Updated mainSections to only include existing sections with their new IDs
+    // Updated mainSections to only include existing sections with their new ID
     const mainSections = document.querySelectorAll('#home-section, #about-section, #filament-types-section, #faq-section');
 
     // --- Color Customization Logic ---

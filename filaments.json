@@ -1,6 +1,7 @@
 {
     "background_image": "https://img.freepik.com/premium-photo/utilizing-3d-printing-technology-modern-workplace_236854-65269.jpg",
     "glassiness_strength": 0.5,
+    "testing_mode": true,
     "filaments": [
         {
             "id": "pla",

@@ -227,7 +227,7 @@ header h1 {
     margin-bottom: 25px;
     letter-spacing: 5px;
     color: #ffffff; /* Explicitly white for the main title text */
-    text-shadow: 0 0 30px var(--main-title-glow-color), 0 0 50px rgba(var(--main-title-glow-color), 0.7); /* Glow uses main-title-glow-color */
+    text-shadow: 0 0 30px var(--main-title-glow-color), 0 0 50px rgba(var(--main-title-glow-color-rgb), 0.7); /* Glow uses main-title-glow-color */
     line-height: 1.1;
 }
 

@@ -39,8 +39,7 @@ a {
 }
 
 a:hover {
-    /* Uses a transparent version of accent color */
-    color: var(--accent-color);
+    color: var(--accent-color); /* Still uses accent color, no transparency change here */
     text-decoration: underline;
 }
 
@@ -120,11 +119,11 @@ a:hover {
 
 /* Sidebar Active State - uses var(--accent-color) */
 .sidebar-nav a.active {
-    background-color: rgba(0, 230, 118, 0.35); /* Fallback */
-    background-color: hsla(from var(--accent-color) h s l / 0.35); /* Use var for background transparency */
+    /* Use rgba with var for transparency */
+    background-color: rgba(var(--accent-color-rgb), 0.35);
     transform: scale(1.15);
-    box-shadow: 0 0 25px var(--accent-color), 0 0 40px hsla(from var(--accent-color) h s l / 0.7);
-    border-color: hsla(from var(--accent-color) h s l / 0.8);
+    box-shadow: 0 0 25px var(--accent-color), 0 0 40px rgba(var(--accent-color-rgb), 0.7);
+    border-color: rgba(var(--accent-color-rgb), 0.8);
 }
 
 .sidebar-nav a::before {
@@ -134,7 +133,8 @@ a:hover {
     left: 50%;
     width: 0;
     height: 0;
-    background: radial-gradient(circle, hsla(from var(--accent-color) h s l / 0.6) 0%, transparent 70%);
+    /* Use rgba with var for transparency */
+    background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.6) 0%, transparent 70%);
     border-radius: 50%;
     transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
     transform: translate(-50%, -50%);
@@ -149,11 +149,11 @@ a:hover {
 }
 
 .sidebar-nav a:hover:not(.active) {
-    background-color: rgba(0, 230, 118, 0.25); /* Fallback */
-    background-color: hsla(from var(--accent-color) h s l / 0.25);
+    /* Use rgba with var for transparency */
+    background-color: rgba(var(--accent-color-rgb), 0.25);
     transform: scale(1.2);
-    box-shadow: 0 0 25px hsla(from var(--accent-color) h s l / 0.9), 0 0 40px hsla(from var(--accent-color) h s l / 0.6);
-    border: 1px solid hsla(from var(--accent-color) h s l / 0.5);
+    box-shadow: 0 0 25px rgba(var(--accent-color-rgb), 0.9), 0 0 40px rgba(var(--accent-color-rgb), 0.6);
+    border: 1px solid rgba(var(--accent-color-rgb), 0.5);
 }
 
 /* Tooltips for sidebar (pure CSS) - uses var(--accent-color) */
@@ -224,7 +224,7 @@ header h1 {
     font-size: 5em;
     margin-bottom: 25px;
     letter-spacing: 5px;
-    text-shadow: 0 0 30px var(--main-title-glow-color), 0 0 50px hsla(from var(--main-title-glow-color) h s l / 0.7);
+    text-shadow: 0 0 30px var(--main-title-glow-color), 0 0 50px rgba(var(--main-title-glow-color-rgb), 0.7);
     line-height: 1.1;
 }
 
@@ -243,7 +243,7 @@ header p {
     color: var(--accent-color); /* Uses accent color */
     animation: bounce 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
     cursor: pointer;
-    text-shadow: 0 0 20px var(--accent-color), 0 0 30px hsla(from var(--accent-color) h s l / 0.7);
+    text-shadow: 0 0 20px var(--accent-color), 0 0 30px rgba(var(--accent-color-rgb), 0.7);
 }
 
 /* Common Section Headers - uses var(--accent-color) */
@@ -254,7 +254,7 @@ section h2 {
     color: var(--accent-color); /* Uses accent color */
     text-transform: uppercase;
     letter-spacing: 4px;
-    text-shadow: 0 0 20px hsla(from var(--accent-color) h s l / 0.8);
+    text-shadow: 0 0 20px rgba(var(--accent-color-rgb), 0.8);
 }
 
 /* Filament Item H3 - uses var(--accent-color) */
@@ -355,14 +355,16 @@ section h3 {
 
 /* Specific placement for the green property boxes - uses var(--property-box-bg-color) */
 .filament-property-item {
-    background: hsla(from var(--property-box-bg-color) h s l / 0.2); /* Background uses property box color with transparency */
+    /* Use rgba with var for transparency */
+    background: rgba(var(--property-box-bg-color-rgb), 0.2);
     color: #fff;
     padding: 10px 15px;
     border-radius: 25px;
     display: flex;
     align-items: center;
     gap: 10px;
-    border: 1px solid hsla(from var(--property-box-bg-color) h s l / 0.4); /* Border uses property box color with transparency */
+    /* Use rgba with var for transparency */
+    border: 1px solid rgba(var(--property-box-bg-color-rgb), 0.4);
     box-shadow: 0 3px 10px rgba(0,0,0,0.3);
     box-sizing: border-box;
     justify-content: flex-start;
@@ -479,7 +481,7 @@ footer {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Centered horizontally and vertically */
+    transform: translate(-50%, -50%) scale(0.8); /* Start smaller for bounce effect */
     z-index: 1000; /* Ensure it's above other content */
 
     background: rgba(255, 255, 255, 0.08);
@@ -501,7 +503,7 @@ footer {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: translate(-50%, -50%) scale(1); /* Ensure it's not offset when visible, scale for bounce */
+    transform: translate(-50%, -50%) scale(1); /* Return to normal size for bounce */
 }
 
 /* Remove speech bubble arrow */
@@ -577,6 +579,21 @@ footer {
 .color-control input[type="color"]::-moz-color-swatch {
     border: none;
     border-radius: 8px;
+}
+
+/* NEW: Hide color picker toggle and popout by default for testing_mode */
+#color-picker-toggle,
+.color-picker-popout {
+    display: none; /* Hidden by default */
+}
+/* If testing_mode is enabled, JS will add a class to override this */
+body.testing-mode #color-picker-toggle,
+body.testing-mode .color-picker-popout {
+    display: block; /* Or flex, depending on element */
+}
+/* For the sidebar toggle, it's a list item, so it needs to be block for <li> */
+body.testing-mode #color-picker-toggle {
+    display: flex; /* Restore flex for the <a> inside <li> */
 }
 
 

@@ -5,13 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const parallaxBg = document.getElementById('parallax-bg');
     const filamentSectionsContainer = document.getElementById('filament-sections-container');
     const sectionsToReveal = document.querySelectorAll('.fade-in');
-    const colorPickerToggle = document.getElementById('color-picker-toggle');
-    const colorPickerPopout = document.getElementById('color-picker-popout');
-    const popupOverlay = document.getElementById('popup-overlay'); // NEW
-    const mainTitleColorInput = document.getElementById('main-title-color');
-    const accentColorInput = document.getElementById('accent-color');
-    const propertyBoxColorInput = document.getElementById('property-box-color');
+    const colorPickerToggle = document.getElementById('color-picker-toggle'); // NEW
+    const colorPickerPopout = document.getElementById('color-picker-popout'); // NEW
+    const mainTitleColorInput = document.getElementById('main-title-color'); // NEW
+    const accentColorInput = document.getElementById('accent-color');     // NEW
+    const propertyBoxColorInput = document.getElementById('property-box-color'); // NEW
 
+    // Updated mainSections to only include existing sections with their new IDs
     const mainSections = document.querySelectorAll('#home-section, #about-section, #filament-types-section, #faq-section');
 
     // --- Color Customization Logic ---
@@ -78,27 +78,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Toggle color picker pop-out and overlay
-    if (colorPickerToggle && colorPickerPopout && popupOverlay) {
+    // Toggle color picker pop-out
+    if (colorPickerToggle && colorPickerPopout) {
         colorPickerToggle.addEventListener('click', (e) => {
             e.preventDefault(); // Prevent default link behavior
             e.stopPropagation(); // Stop click from bubbling to document
             colorPickerPopout.classList.toggle('visible');
-            popupOverlay.classList.toggle('visible'); // Toggle overlay visibility
         });
 
-        // Close pop-out if clicked outside popout or on the overlay
+        // Close pop-out if clicked outside
         document.addEventListener('click', (e) => {
-            const isClickInsidePopout = colorPickerPopout.contains(e.target);
-            const isClickOnToggle = e.target === colorPickerToggle || colorPickerToggle.contains(e.target);
-
-            if (colorPickerPopout.classList.contains('visible') && !isClickInsidePopout && !isClickOnToggle) {
+            if (colorPickerPopout.classList.contains('visible') &&
+                !colorPickerPopout.contains(e.target) &&
+                e.target !== colorPickerToggle &&
+                !colorPickerToggle.contains(e.target)) { // Check if click is outside popout and toggle
                 colorPickerPopout.classList.remove('visible');
-                popupOverlay.classList.remove('visible');
             }
         });
     } else {
-        console.warn("Color picker toggle, popout, or overlay element not found.");
+        console.warn("Color picker toggle or popout element not found.");
     }
 
 

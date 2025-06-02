@@ -386,10 +386,6 @@ section h3 {
     padding-bottom: 10px;
 }
 
-.filament-property-item i {
-    flex-shrink: 0; /* Prevent icons from shrinking */
-}
-
 .filament-colors i {
     margin-right: 0; /* Remove right margin for icon in colors list */
 }
@@ -593,7 +589,7 @@ body.testing-mode .color-picker-popout {
     display: block; /* Restore display */
 }
 /* For the sidebar toggle, it's a list item, so it needs to be block for <li> */
-body.testing-mode .sidebar-nav li:last-child { /* Target the li wrapping the toggle */
+body.testing-mode #color-picker-toggle-li { /* Target the li wrapping the toggle */
     display: block; /* Show the list item */
 }
 body.testing-mode #color-picker-toggle { /* Restore flex for the <a> itself */

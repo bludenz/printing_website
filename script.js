@@ -1,255 +1,318 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const root = document.documentElement; // Get the :root element
-    const backgroundContainer = document.querySelector('.background-container');
-    const parallaxBg = document.getElementById('parallax-bg');
-    const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
-    const sections = document.querySelectorAll('.section-content');
+    // Select all necessary elements at the start of DOMContentLoaded.
     const scrollDownArrow = document.querySelector('.scroll-down-arrow');
+    const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+    const parallaxBg = document.getElementById('parallax-bg');
     const filamentSectionsContainer = document.getElementById('filament-sections-container');
-    const popupOverlay = document.getElementById('popup-overlay');
-    const colorPickerPopout = document.getElementById('color-picker-popout');
+    const sectionsToReveal = document.querySelectorAll('.fade-in');
     const colorPickerToggle = document.getElementById('color-picker-toggle');
-
-    // Color picker inputs
+    const colorPickerPopout = document.getElementById('color-picker-popout');
+    const popupOverlay = document.getElementById('popup-overlay');
     const mainTitleColorInput = document.getElementById('main-title-color');
     const accentColorInput = document.getElementById('accent-color');
     const propertyBoxColorInput = document.getElementById('property-box-color');
 
-    let filamentData = []; // To store fetched filament data
+    const mainSections = document.querySelectorAll('#home-section, #about-section, #filament-types-section, #faq-section');
 
-    // --- Helper Functions ---
-
-    // Converts hex color to RGB array
+    // Helper to convert hex to RGB components (e.g., "255, 0, 128")
     function hexToRgb(hex) {
-        const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-        hex = hex.replace(shorthandRegex, function (m, r, g, b) {
-            return r + r + g + g + b + b;
+        let r = 0, g = 0, b = 0;
+        // Handle #RRGGBB
+        if (hex.length === 7) {
+            r = parseInt(hex.substring(1, 3), 16);
+            g = parseInt(hex.substring(3, 5), 16);
+            b = parseInt(hex.substring(5, 7), 16);
+        }
+        return `${r}, ${g}, ${b}`;
+    }
+
+    // --- Color Customization Logic ---
+    const defaultColors = {
+        mainTitleGlow: '#00e676',
+        accent: '#00e676',
+        propertyBoxBg: '#00e676'
+    };
+
+    // Function to apply colors to CSS variables
+    function applyColors(colors) {
+        document.documentElement.style.setProperty('--main-title-glow-color', colors.mainTitleGlow);
+        document.documentElement.style.setProperty('--main-title-glow-color-rgb', hexToRgb(colors.mainTitleGlow));
+
+        document.documentElement.style.setProperty('--accent-color', colors.accent);
+        document.documentElement.style.setProperty('--accent-color-rgb', hexToRgb(colors.accent));
+
+        document.documentElement.style.setProperty('--property-box-bg-color', colors.propertyBoxBg);
+        document.documentElement.style.setProperty('--property-box-bg-color-rgb', hexToRgb(colors.propertyBoxBg));
+    }
+
+    // Function to load colors from localStorage
+    function loadColors() {
+        const savedColors = localStorage.getItem('customThemeColors');
+        if (savedColors) {
+            const parsedColors = JSON.parse(savedColors);
+            return {
+                mainTitleGlow: parsedColors.mainTitleGlow || defaultColors.mainTitleGlow,
+                accent: parsedColors.accent || defaultColors.accent,
+                propertyBoxBg: parsedColors.propertyBoxBg || defaultColors.propertyBoxBg
+            };
+        }
+        return defaultColors;
+    }
+
+    // Function to save colors to localStorage
+    function saveColors(colors) {
+        localStorage.setItem('customThemeColors', JSON.stringify(colors));
+    }
+
+    // Initialize colors on page load
+    const currentColors = loadColors();
+    applyColors(currentColors);
+    // Set initial values of color inputs
+    if (mainTitleColorInput) mainTitleColorInput.value = currentColors.mainTitleGlow;
+    if (accentColorInput) accentColorInput.value = currentColors.accent;
+    if (propertyBoxColorInput) propertyBoxColorInput.value = currentColors.propertyBoxBg;
+
+    // Event listeners for color input changes
+    if (mainTitleColorInput) {
+        mainTitleColorInput.addEventListener('input', (e) => {
+            currentColors.mainTitleGlow = e.target.value;
+            applyColors(currentColors);
+            saveColors(currentColors);
         });
-        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? [
-            parseInt(result[1], 16),
-            parseInt(result[2], 16),
-            parseInt(result[3], 16)
-        ] : null;
     }
-
-    // Sets CSS variables based on color inputs
-    function setCssVariables(
-        mainTitleHex, accentHex, propertyBoxHex
-    ) {
-        const mainTitleRgb = hexToRgb(mainTitleHex);
-        const accentRgb = hexToRgb(accentHex);
-        const propertyBoxRgb = hexToRgb(propertyBoxHex);
-
-        if (mainTitleRgb) {
-            root.style.setProperty('--main-title-glow-color', mainTitleHex);
-            root.style.setProperty('--main-title-glow-color-rgb', mainTitleRgb.join(', '));
-        }
-        if (accentRgb) {
-            root.style.setProperty('--accent-color', accentHex);
-            root.style.setProperty('--accent-color-rgb', accentRgb.join(', '));
-        }
-        if (propertyBoxRgb) {
-            root.style.setProperty('--property-box-bg-color', propertyBoxHex);
-            root.style.setProperty('--property-box-bg-color-rgb', propertyBoxRgb.join(', '));
-        }
-
-        console.log('CSS Variables Updated:');
-        console.log('--main-title-glow-color:', root.style.getPropertyValue('--main-title-glow-color'));
-        console.log('--accent-color:', root.style.getPropertyValue('--accent-color'));
-        console.log('--property-box-bg-color:', root.style.getPropertyValue('--property-box-bg-color'));
+    if (accentColorInput) {
+        accentColorInput.addEventListener('input', (e) => {
+            currentColors.accent = e.target.value;
+            applyColors(currentColors);
+            saveColors(currentColors);
+        });
     }
-
-    // Loads filament data into the DOM
-    function loadFilamentData(data) {
-        if (!data || data.length === 0) {
-            filamentSectionsContainer.innerHTML = '<p style="text-align: center; font-style: italic; color: #a0a0a0;">No filament data available.</p>';
-            return;
-        }
-
-        filamentSectionsContainer.innerHTML = ''; // Clear loading message
-
-        data.forEach(filament => {
-            const filamentItem = document.createElement('div');
-            filamentItem.className = 'filament-item';
-
-            const title = document.createElement('h3');
-            title.textContent = filament.name;
-            filamentItem.appendChild(title);
-
-            const description = document.createElement('p');
-            description.textContent = filament.description;
-            filamentItem.appendChild(description);
-
-            const propertiesDiv = document.createElement('div');
-            propertiesDiv.className = 'filament-properties';
-
-            // Price
-            const priceItem = document.createElement('div');
-            priceItem.className = 'filament-property-item filament-price';
-            priceItem.innerHTML = `<i class="fas fa-dollar-sign"></i> <span>Price per kg: ${filament.properties.price_per_kg}</span>`;
-            propertiesDiv.appendChild(priceItem);
-
-            // Hardness
-            const hardnessItem = document.createElement('div');
-            hardnessItem.className = 'filament-property-item filament-hardness';
-            hardnessItem.innerHTML = `<i class="fas fa-grip-lines"></i> <span>Hardness: ${filament.properties.hardness}</span>`;
-            propertiesDiv.appendChild(hardnessItem);
-
-            // Colors
-            const colorsItem = document.createElement('div');
-            colorsItem.className = 'filament-property-item filament-colors';
-            const colorsTitle = document.createElement('span');
-            colorsTitle.innerHTML = `<i class="fas fa-palette"></i> <span>Available Colors:</span>`;
-            colorsItem.appendChild(colorsTitle);
-
-            const colorsListWrapper = document.createElement('div');
-            colorsListWrapper.className = 'colors-list'; // Wrapper for the colors list
-            const colorBoxesWrapper = document.createElement('div');
-            colorBoxesWrapper.className = 'color-boxes-wrapper'; // Wrapper for the individual color boxes
-
-            filament.properties.colors.forEach(color => {
-                const colorBox = document.createElement('span');
-                colorBox.className = 'color-box';
-                colorBox.style.backgroundColor = color;
-                colorBoxesWrapper.appendChild(colorBox);
-            });
-            colorsListWrapper.appendChild(colorBoxesWrapper);
-            colorsItem.appendChild(colorsListWrapper);
-            propertiesDiv.appendChild(colorsItem);
-
-            filamentItem.appendChild(propertiesDiv);
-            filamentSectionsContainer.appendChild(filamentItem);
+    if (propertyBoxColorInput) {
+        propertyBoxColorInput.addEventListener('input', (e) => {
+            currentColors.propertyBoxBg = e.target.value;
+            applyColors(currentColors);
+            saveColors(currentColors);
         });
     }
 
-    // Handles scroll events for parallax and active navigation links
-    function handleScroll() {
-        // Parallax Effect
-        const scrollPosition = window.pageYOffset;
-        if (parallaxBg) {
-            // Adjust the 0.2 factor for more or less parallax
-            parallaxBg.style.transform = `scale(1.15) translateY(${scrollPosition * 0.2}px)`;
-        }
+    // Toggle color picker pop-out and overlay
+    if (colorPickerToggle && colorPickerPopout && popupOverlay) {
+        colorPickerToggle.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link behavior
+            e.stopPropagation(); // Stop click from bubbling to document
+            colorPickerPopout.classList.toggle('visible');
+            popupOverlay.classList.toggle('visible'); // Toggle overlay visibility
+        });
 
-        // Active Navigation Link
-        let currentActiveSection = null;
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop - 100; // Offset for better active state
-            const sectionBottom = sectionTop + section.offsetHeight;
-            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                currentActiveSection = section.id;
+        // Close pop-out if clicked anywhere outside popout or on the overlay
+        document.addEventListener('click', (e) => {
+            const isClickInsidePopout = colorPickerPopout.contains(e.target);
+            const isClickOnToggle = e.target === colorPickerToggle || colorPickerToggle.contains(e.target);
+
+            // If popout is visible and click is NOT inside popout AND click is NOT on toggle
+            if (colorPickerPopout.classList.contains('visible') && !isClickInsidePopout && !isClickOnToggle) {
+                colorPickerPopout.classList.remove('visible');
+                popupOverlay.classList.remove('visible');
             }
         });
+    } else {
+        console.warn("Color picker toggle, popout, or overlay element not found. Check HTML structure.");
+    }
 
+
+    // --- Scroll Down Arrow functionality ---
+    if (scrollDownArrow) {
+        scrollDownArrow.addEventListener('click', () => {
+            const aboutSection = document.getElementById('about-section');
+            if (aboutSection) {
+                aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+            }
+        });
+    } else {
+        console.warn("Scroll down arrow element not found.");
+    }
+
+    // --- Sidebar Navigation Smooth Scrolling ---
+    if (sidebarLinks.length > 0) {
         sidebarLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href').includes(currentActiveSection)) {
-                link.classList.add('active');
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                } else {
+                    console.warn(`Target element for ID '${targetId}' not found.`);
+                }
+            });
+        });
+    } else {
+        console.warn("Sidebar navigation links not found.");
+    }
+
+    // --- Active Navbar State on Scroll ---
+    const navObserverOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.5 // Adjust this threshold if sections aren't highlighting correctly. 0.5 means 50% of the section must be visible.
+    };
+
+    const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const id = entry.target.id;
+            // Only update active class if the entry is intersecting
+            if (entry.isIntersecting) {
+                sidebarLinks.forEach(link => link.classList.remove('active'));
+                const correspondingLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                if (correspondingLink) {
+                    correspondingLink.classList.add('active');
+                }
             }
         });
+    }, navObserverOptions);
 
-        // Toggle 'testing-mode' class on body when color picker is visible
-        if (colorPickerPopout.classList.contains('visible')) {
-            document.body.classList.add('testing-mode');
-        } else {
-            document.body.classList.remove('testing-mode');
-        }
-    }
+    mainSections.forEach(section => {
+        navObserver.observe(section);
+    });
 
-    // Handles click on scroll down arrow
-    function handleScrollDownArrowClick() {
-        const nextSection = document.getElementById('about-section');
-        if (nextSection) {
-            window.scrollTo({
-                top: nextSection.offsetTop,
-                behavior: 'smooth'
-            });
-        }
-    }
-
-    // Shows the color picker popout
-    function showColorPicker() {
-        popupOverlay.classList.add('visible');
-        colorPickerPopout.classList.add('visible');
-        document.body.classList.add('testing-mode'); // Ensure testing-mode is active
-        document.body.style.overflow = 'hidden'; // Prevent body scroll
-    }
-
-    // Hides the color picker popout
-    function hideColorPicker() {
-        popupOverlay.classList.remove('visible');
-        colorPickerPopout.classList.remove('visible');
-        document.body.classList.remove('testing-mode'); // Deactivate testing-mode
-        document.body.style.overflow = ''; // Restore body scroll
-    }
-
-    // --- Event Listeners ---
-
-    // Fetch filament data
+    // --- Filament Data Loading & Display ---
     fetch('filaments.json')
         .then(response => {
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorStatus = response.status;
+                const errorText = response.statusText;
+                throw new Error(`HTTP error! Status: ${errorStatus} ${errorText || ''} - Failed to load filaments.json. Please ensure the file exists and is accessible.`);
             }
             return response.json();
         })
         .then(data => {
-            filamentData = data;
-            loadFilamentData(filamentData); // Load data after fetching
+            // --- NEW: Testing Mode Logic ---
+            if (data.testing_mode === true) {
+                document.body.classList.add('testing-mode');
+                console.log("Testing Mode: Enabled. Color customization icon visible.");
+            } else {
+                document.body.classList.remove('testing-mode');
+                console.log("Testing Mode: Disabled. Color customization icon hidden.");
+            }
+
+            // Set background image from JSON
+            if (parallaxBg && data.background_image) {
+                parallaxBg.style.backgroundImage = `url('${data.background_image}')`;
+            } else if (!parallaxBg) {
+                console.warn("Parallax background element (#parallax-bg) not found in HTML.");
+            } else if (!data.background_image) {
+                console.warn("Background image URL not found in filaments.json. Using a default background.");
+                parallaxBg.style.backgroundImage = 'url("https://source.unsplash.com/random/1920x1080/?futuristic-tech,dark-abstract")';
+                parallaxBg.style.filter = 'blur(15px) brightness(0.8)';
+            }
+
+
+            // Set glassiness strength as a CSS custom property
+            if (typeof data.glassiness_strength === 'number') {
+                document.documentElement.style.setProperty('--glassiness-strength', data.glassiness_strength);
+                console.log('Glassiness strength set to:', data.glassiness_strength); // Log the value
+            } else {
+                console.warn("glassiness_strength not found or is not a number in filaments.json. Defaulting to 1.0.");
+                document.documentElement.style.setProperty('--glassiness-strength', 1.0); // Fallback
+            }
+
+            const filaments = data.filaments;
+
+            // Clear loading messages and populate filament sections
+            if (filamentSectionsContainer) {
+                filamentSectionsContainer.innerHTML = ''; // Clear "Loading filament details..."
+                filamentSectionsContainer.classList.add('filament-grid-container');
+
+                filaments.forEach(filament => {
+                    const sectionDiv = document.createElement('div');
+                    sectionDiv.classList.add('filament-item');
+                    sectionDiv.setAttribute('data-filament-id', filament.id);
+
+                    const colors = Array.isArray(filament.colors) ? filament.colors : [];
+                    const colorsHtml = colors.map(colorHex => {
+                        return `<span class="color-box" style="background-color: ${colorHex};" title="${colorHex}"></span>`;
+                    }).join('');
+
+                    sectionDiv.innerHTML = `
+                        <h3>${filament.name}</h3>
+                        <p>${filament.description}</p>
+                        <div class="filament-properties">
+                            <span class="filament-property-item filament-price"><i class="fas fa-money-bill-wave"></i> Price: $${filament.base_price_per_gram.toFixed(2)}/gram</span>
+                            <span class="filament-property-item filament-hardness"><i class="fas fa-ruler-combined"></i> Hardness (Shore D): ${filament.hardness_shore_d}</span>
+                            <span class="filament-property-item filament-colors colors-list">
+                                <i class="fas fa-palette"></i> Colors:
+                                <div class="color-boxes-wrapper">
+                                    ${colorsHtml}
+                                </div>
+                            </span>
+                        </div>
+                    `;
+                    filamentSectionsContainer.appendChild(sectionDiv);
+                });
+            } else {
+                console.error("Error: Element with ID 'filament-sections-container' not found. Cannot display filament details.");
+                const errorHtml = `<p style="color: #ff6b6b; text-align: center; padding: 20px;">
+                                    <strong>Error:</strong> Filament details container missing in HTML.
+                                  </p>`;
+                document.querySelector('#filament-types-section')?.insertAdjacentHTML('beforeend', errorHtml);
+            }
+
+            // --- Scroll Reveal Effect (after content is loaded) ---
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            if (sectionsToReveal.length > 0) {
+                sectionsToReveal.forEach(section => {
+                    observer.observe(section);
+                });
+            } else {
+                console.warn("No elements with class 'fade-in' found for scroll reveal.");
+            }
+
+            // --- Parallax Effect ---
+            if (parallaxBg) {
+                window.addEventListener('scroll', () => {
+                    const scrollPosition = window.pageYOffset;
+                    parallaxBg.style.transform = `scale(1.15) translateY(${scrollPosition * 0.3}px)`;
+                });
+            }
         })
         .catch(error => {
-            console.error('Error fetching filament data:', error);
-            filamentSectionsContainer.innerHTML = '<p style="text-align: center; font-style: italic; color: red;">Failed to load filament data. Please check console for errors.</p>';
-        });
+            console.error('An error occurred during data loading or processing:', error);
+            const globalErrorDiv = document.createElement('div');
+            globalErrorDiv.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; padding: 15px;
+                background-color: rgba(255, 0, 0, 0.8); color: white; text-align: center;
+                font-family: sans-serif; z-index: 9999;
+                box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            `;
+            globalErrorDiv.innerHTML = `
+                <strong>Critical Error:</strong> Could not load essential data. Please check your console (F12) for details.
+                <br>Reason: ${error.message || 'Unknown error.'}
+            `;
+            document.body.prepend(globalErrorDiv);
 
-    // Set initial colors from CSS variables on load
-    const initialMainTitleColor = getComputedStyle(root).getPropertyValue('--main-title-glow-color');
-    const initialAccentColor = getComputedStyle(root).getPropertyValue('--accent-color');
-    const initialPropertyBoxColor = getComputedStyle(root).getPropertyValue('--property-box-bg-color');
-
-    mainTitleColorInput.value = initialMainTitleColor;
-    accentColorInput.value = initialAccentColor;
-    propertyBoxColorInput.value = initialPropertyBoxColor;
-
-    // Listen for changes on color inputs
-    mainTitleColorInput.addEventListener('input', (e) => {
-        setCssVariables(e.target.value, accentColorInput.value, propertyBoxColorInput.value);
-    });
-    accentColorInput.addEventListener('input', (e) => {
-        setCssVariables(mainTitleColorInput.value, e.target.value, propertyBoxColorInput.value);
-    });
-    propertyBoxColorInput.addEventListener('input', (e) => {
-        setCssVariables(mainTitleColorInput.value, accentColorInput.value, e.target.value);
-    });
-
-    // Sidebar navigation clicks
-    sidebarLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Only prevent default if it's the color picker toggle
-            if (this.id === 'color-picker-toggle') {
-                e.preventDefault(); // Prevent default for the color picker toggle
-                showColorPicker();
-            } else {
-                // For regular navigation links, allow default behavior (scroll to section)
-                // and just update active class
-                sidebarLinks.forEach(item => item.classList.remove('active'));
-                this.classList.add('active');
+            // Fallback for background image even if filaments.json fails
+            if (parallaxBg) {
+                parallaxBg.style.backgroundImage = 'url("https://source.unsplash.com/random/1920x1080/?futuristic-tech,dark-abstract")';
+                parallaxBg.style.filter = 'blur(15px) brightness(0.8)';
             }
         });
-    });
-
-    // Overlay click to close popout
-    popupOverlay.addEventListener('click', hideColorPicker);
-
-    // Initial scroll handler call to set active link and parallax
-    handleScroll();
-
-    // Scroll event listener
-    window.addEventListener('scroll', handleScroll);
-
-    // Scroll down arrow click listener
-    if (scrollDownArrow) {
-        scrollDownArrow.addEventListener('click', handleScrollDownArrowClick);
-    }
 });

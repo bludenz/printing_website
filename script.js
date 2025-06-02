@@ -7,24 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const sectionsToReveal = document.querySelectorAll('.fade-in');
     const colorPickerToggle = document.getElementById('color-picker-toggle');
     const colorPickerPopout = document.getElementById('color-picker-popout');
-    const popupOverlay = document.getElementById('popup-overlay');
+    const popupOverlay = document.getElementById('popup-overlay'); // NEW
     const mainTitleColorInput = document.getElementById('main-title-color');
     const accentColorInput = document.getElementById('accent-color');
     const propertyBoxColorInput = document.getElementById('property-box-color');
 
     const mainSections = document.querySelectorAll('#home-section, #about-section, #filament-types-section, #faq-section');
-
-    // Helper to convert hex to RGB components (e.g., "255, 0, 128")
-    function hexToRgb(hex) {
-        let r = 0, g = 0, b = 0;
-        // Handle #RRGGBB
-        if (hex.length === 7) {
-            r = parseInt(hex.substring(1, 3), 16);
-            g = parseInt(hex.substring(3, 5), 16);
-            b = parseInt(hex.substring(5, 7), 16);
-        }
-        return `${r}, ${g}, ${b}`;
-    }
 
     // --- Color Customization Logic ---
     const defaultColors = {
@@ -36,13 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to apply colors to CSS variables
     function applyColors(colors) {
         document.documentElement.style.setProperty('--main-title-glow-color', colors.mainTitleGlow);
-        document.documentElement.style.setProperty('--main-title-glow-color-rgb', hexToRgb(colors.mainTitleGlow));
-
         document.documentElement.style.setProperty('--accent-color', colors.accent);
-        document.documentElement.style.setProperty('--accent-color-rgb', hexToRgb(colors.accent));
-
         document.documentElement.style.setProperty('--property-box-bg-color', colors.propertyBoxBg);
-        document.documentElement.style.setProperty('--property-box-bg-color-rgb', hexToRgb(colors.propertyBoxBg));
     }
 
     // Function to load colors from localStorage
@@ -104,19 +87,18 @@ document.addEventListener('DOMContentLoaded', () => {
             popupOverlay.classList.toggle('visible'); // Toggle overlay visibility
         });
 
-        // Close pop-out if clicked anywhere outside popout or on the overlay
+        // Close pop-out if clicked outside popout or on the overlay
         document.addEventListener('click', (e) => {
             const isClickInsidePopout = colorPickerPopout.contains(e.target);
             const isClickOnToggle = e.target === colorPickerToggle || colorPickerToggle.contains(e.target);
 
-            // If popout is visible and click is NOT inside popout AND click is NOT on toggle
             if (colorPickerPopout.classList.contains('visible') && !isClickInsidePopout && !isClickOnToggle) {
                 colorPickerPopout.classList.remove('visible');
                 popupOverlay.classList.remove('visible');
             }
         });
     } else {
-        console.warn("Color picker toggle, popout, or overlay element not found. Check HTML structure.");
+        console.warn("Color picker toggle, popout, or overlay element not found.");
     }
 
 
@@ -191,26 +173,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            // --- NEW: Testing Mode Logic ---
-            if (data.testing_mode === true) {
-                document.body.classList.add('testing-mode');
-                console.log("Testing Mode: Enabled. Color customization icon visible.");
-            } else {
-                document.body.classList.remove('testing-mode');
-                console.log("Testing Mode: Disabled. Color customization icon hidden.");
-            }
-
             // Set background image from JSON
             if (parallaxBg && data.background_image) {
                 parallaxBg.style.backgroundImage = `url('${data.background_image}')`;
             } else if (!parallaxBg) {
                 console.warn("Parallax background element (#parallax-bg) not found in HTML.");
             } else if (!data.background_image) {
-                console.warn("Background image URL not found in filaments.json. Using a default background.");
-                parallaxBg.style.backgroundImage = 'url("https://source.unsplash.com/random/1920x1080/?futuristic-tech,dark-abstract")';
-                parallaxBg.style.filter = 'blur(15px) brightness(0.8)';
+                console.warn("Background image URL not found in filaments.json.");
             }
-
 
             // Set glassiness strength as a CSS custom property
             if (typeof data.glassiness_strength === 'number') {
@@ -309,10 +279,9 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             document.body.prepend(globalErrorDiv);
 
-            // Fallback for background image even if filaments.json fails
             if (parallaxBg) {
                 parallaxBg.style.backgroundImage = 'url("https://source.unsplash.com/random/1920x1080/?futuristic-tech,dark-abstract")';
-                parallaxBg.style.filter = 'blur(15px) brightness(0.8)';
+                parallaxBg.style.filter = 'blur(10px) brightness(0.7)';
             }
         });
 });

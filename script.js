@@ -5,9 +5,100 @@ document.addEventListener('DOMContentLoaded', () => {
     const parallaxBg = document.getElementById('parallax-bg');
     const filamentSectionsContainer = document.getElementById('filament-sections-container');
     const sectionsToReveal = document.querySelectorAll('.fade-in');
+    const colorPickerToggle = document.getElementById('color-picker-toggle'); // NEW
+    const colorPickerPopout = document.getElementById('color-picker-popout'); // NEW
+    const mainTitleColorInput = document.getElementById('main-title-color'); // NEW
+    const accentColorInput = document.getElementById('accent-color');     // NEW
+    const propertyBoxColorInput = document.getElementById('property-box-color'); // NEW
 
     // Updated mainSections to only include existing sections with their new IDs
     const mainSections = document.querySelectorAll('#home-section, #about-section, #filament-types-section, #faq-section');
+
+    // --- Color Customization Logic ---
+    const defaultColors = {
+        mainTitleGlow: '#00e676',
+        accent: '#00e676',
+        propertyBoxBg: '#00e676'
+    };
+
+    // Function to apply colors to CSS variables
+    function applyColors(colors) {
+        document.documentElement.style.setProperty('--main-title-glow-color', colors.mainTitleGlow);
+        document.documentElement.style.setProperty('--accent-color', colors.accent);
+        document.documentElement.style.setProperty('--property-box-bg-color', colors.propertyBoxBg);
+    }
+
+    // Function to load colors from localStorage
+    function loadColors() {
+        const savedColors = localStorage.getItem('customThemeColors');
+        if (savedColors) {
+            const parsedColors = JSON.parse(savedColors);
+            return {
+                mainTitleGlow: parsedColors.mainTitleGlow || defaultColors.mainTitleGlow,
+                accent: parsedColors.accent || defaultColors.accent,
+                propertyBoxBg: parsedColors.propertyBoxBg || defaultColors.propertyBoxBg
+            };
+        }
+        return defaultColors;
+    }
+
+    // Function to save colors to localStorage
+    function saveColors(colors) {
+        localStorage.setItem('customThemeColors', JSON.stringify(colors));
+    }
+
+    // Initialize colors on page load
+    const currentColors = loadColors();
+    applyColors(currentColors);
+    // Set initial values of color inputs
+    if (mainTitleColorInput) mainTitleColorInput.value = currentColors.mainTitleGlow;
+    if (accentColorInput) accentColorInput.value = currentColors.accent;
+    if (propertyBoxColorInput) propertyBoxColorInput.value = currentColors.propertyBoxBg;
+
+    // Event listeners for color input changes
+    if (mainTitleColorInput) {
+        mainTitleColorInput.addEventListener('input', (e) => {
+            currentColors.mainTitleGlow = e.target.value;
+            applyColors(currentColors);
+            saveColors(currentColors);
+        });
+    }
+    if (accentColorInput) {
+        accentColorInput.addEventListener('input', (e) => {
+            currentColors.accent = e.target.value;
+            applyColors(currentColors);
+            saveColors(currentColors);
+        });
+    }
+    if (propertyBoxColorInput) {
+        propertyBoxColorInput.addEventListener('input', (e) => {
+            currentColors.propertyBoxBg = e.target.value;
+            applyColors(currentColors);
+            saveColors(currentColors);
+        });
+    }
+
+    // Toggle color picker pop-out
+    if (colorPickerToggle && colorPickerPopout) {
+        colorPickerToggle.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link behavior
+            e.stopPropagation(); // Stop click from bubbling to document
+            colorPickerPopout.classList.toggle('visible');
+        });
+
+        // Close pop-out if clicked outside
+        document.addEventListener('click', (e) => {
+            if (colorPickerPopout.classList.contains('visible') &&
+                !colorPickerPopout.contains(e.target) &&
+                e.target !== colorPickerToggle &&
+                !colorPickerToggle.contains(e.target)) { // Check if click is outside popout and toggle
+                colorPickerPopout.classList.remove('visible');
+            }
+        });
+    } else {
+        console.warn("Color picker toggle or popout element not found.");
+    }
+
 
     // --- Scroll Down Arrow functionality ---
     if (scrollDownArrow) {

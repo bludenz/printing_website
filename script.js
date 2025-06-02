@@ -217,19 +217,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // If testing_mode is true, add a class to the body to show the color picker elements
             if (data.testing_mode === true) {
                 document.body.classList.add('testing-mode');
-                if (colorPickerToggleLi) {
-                    // This explicitly sets the display of the list item wrapping the toggle
-                    // to ensure it shows up if it was hidden by default CSS.
-                    // This might be redundant if CSS already handles it via `body.testing-mode li:last-child`
-                    // but it's here for explicit control.
-                    colorPickerToggleLi.style.display = 'block';
-                }
+                // The CSS now handles showing/hiding color-picker-toggle-li based on .testing-mode class
                 console.log("Testing Mode: Enabled. Color customization icon visible.");
             } else {
                 document.body.classList.remove('testing-mode');
-                if (colorPickerToggleLi) {
-                    colorPickerToggleLi.style.display = 'none'; // Ensure it's hidden
-                }
+                // The CSS now handles showing/hiding color-picker-toggle-li based on .testing-mode class
                 console.log("Testing Mode: Disabled. Color customization icon hidden.");
             }
 

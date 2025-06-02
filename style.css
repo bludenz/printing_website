@@ -386,6 +386,10 @@ section h3 {
     padding-bottom: 10px;
 }
 
+.filament-property-item i {
+    flex-shrink: 0; /* Prevent icons from shrinking */
+}
+
 .filament-colors i {
     margin-right: 0; /* Remove right margin for icon in colors list */
 }
@@ -579,18 +583,18 @@ footer {
 }
 
 /* Hide color picker toggle and popout by default for testing_mode */
-#color-picker-toggle-li { /* Target the li wrapping the toggle */
-    display: none; /* Hidden by default */
-}
+#color-picker-toggle,
 .color-picker-popout {
     display: none; /* Hidden by default */
 }
 /* If testing_mode is enabled, JS will add a class to body to override this */
-body.testing-mode #color-picker-toggle-li { /* Show the list item */
-    display: block;
-}
+body.testing-mode #color-picker-toggle,
 body.testing-mode .color-picker-popout {
     display: block; /* Restore display */
+}
+/* For the sidebar toggle, it's a list item, so it needs to be block for <li> */
+body.testing-mode .sidebar-nav li:last-child { /* Target the li wrapping the toggle */
+    display: block; /* Show the list item */
 }
 body.testing-mode #color-picker-toggle { /* Restore flex for the <a> itself */
     display: flex;
@@ -776,15 +780,14 @@ body.testing-mode #color-picker-toggle { /* Restore flex for the <a> itself */
         width: calc(100% - 40px); /* Full width with margin */
         max-width: 350px; /* Max width */
         z-index: 1000;
-        /* Start position for animation when hidden */
+        /* Re-hide transform */
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transform: translateX(-50%) translateY(50px); /* Start slightly below for slide-up effect */
-        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bounce transition */
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
     }
     .color-picker-popout.visible {
-        transform: translateX(-50%) translateY(0); /* Animate to normal position */
+        transform: translateX(-50%) translateY(0); /* Animate from bottom */
     }
     .color-controls-grid {
         grid-template-columns: 1fr; /* Stack controls vertically on small screens */

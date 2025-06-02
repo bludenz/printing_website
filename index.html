@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TurboDiesel Labs - 3D Printing Services</title>
+    <title>3D Printing Filaments - Your Guide to Materials</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -21,46 +21,75 @@
             <li><a href="#about-section" title="About Us"><i class="fas fa-info-circle"></i></a></li>
             <li><a href="#filament-types-section" title="Filament Types"><i class="fas fa-cube"></i></a></li>
             <li><a href="#faq-section" title="FAQ"><i class="fas fa-question-circle"></i></a></li>
+            <li><a href="#" id="color-picker-toggle" title="Customize Colors"><i class="fas fa-paint-brush"></i></a></li>
         </ul>
     </nav>
 
     <div class="content-wrapper">
+
         <header id="home-section" class="section-content fade-in">
-            <h1>TurboDiesel Labs - 3D<br>Printing Services</h1>
-            <p>Bringing your ideas to life, one layer at a time.</p>
+            <h1>Unlock the World of 3D Printing Materials</h1>
+            <p>Your comprehensive guide to filament types, properties, and applications.</p>
             <div class="scroll-down-arrow"><i class="fas fa-chevron-down"></i></div>
         </header>
 
         <section id="about-section" class="section-content fade-in">
-            <h2>About Us</h2>
-            <p>Welcome to TurboDiesel Labs, where precision meets passion in 3D printing. Founded by Bludenz, a high-achieving student with a deep understanding of mechanics, CAD design, and innovative fabrication, we specialize in transforming digital concepts into tangible realities.</p>
-            <p>Leveraging state-of-the-art 3D printing technology and a meticulous approach to every project, we're dedicated to delivering exceptional quality, whether it's a functional prototype, a custom replacement part, or a unique artistic creation. At TurboDiesel Labs, we're not just printing; we're building the future, one layer at a time.</p>
+            <h2>About This Guide</h2>
+            <p>Welcome to the ultimate resource for understanding 3D printer filaments. Whether you're a beginner curious about what materials to use, or an experienced maker looking to optimize your prints, this guide is designed to help you navigate the vast and exciting world of 3D printing filaments.</p>
+            <p>We delve into the unique characteristics, best uses, and common challenges associated with various filament types, from the popular PLA to advanced composites. Our goal is to empower you with the knowledge to choose the perfect material for your next project, ensuring successful and stunning prints every time.</p>
+            <p>Our commitment is to provide accurate, up-to-date, and easy-to-understand information, making complex material science accessible to everyone. Explore, learn, and create with confidence!</p>
         </section>
 
         <section id="filament-types-section" class="section-content fade-in">
-            <h2>Types of Filament</h2>
-            <p>Choosing the right material is crucial for your print's success. Here are the primary filaments we offer, each with unique properties:</p>
-            <div id="filament-sections-container" class="filament-grid-container">
-                <p style="text-align: center; color: #aaa;">Loading filament details...</p>
+            <h2>Popular Filament Types</h2>
+            <div id="filament-sections-container">
+                <p style="text-align: center; font-style: italic; color: #a0a0a0;">Loading filament details...</p>
             </div>
-            <p class="note">If you have specific requirements or need a filament not listed, please contact us!</p>
+            <p class="note">Each filament type has unique properties affecting its strength, flexibility, temperature resistance, and printability. Choose wisely for your specific project needs!</p>
         </section>
 
         <section id="faq-section" class="section-content fade-in">
             <h2>Frequently Asked Questions</h2>
-            <h3>What file formats do you accept?</h3>
-            <p>We primarily accept .STL, .OBJ, and .3MF files. If you have another format, please contact us to discuss compatibility.</p>
-
-            <h3>How long does a print take?</h3>
-            <p>Print times vary greatly depending on the model's size, complexity, chosen material, and desired print quality. We'll provide an estimated turnaround time with your quote.</p>
-
-            <h3>Can you help with design?</h3>
-            <p>While our primary service is printing, we can offer basic advice or recommend design resources if you need assistance with your model.</p>
+            <div class="faq-item">
+                <h3>What is PLA?</h3>
+                <p>PLA (Polylactic Acid) is the most popular and easiest filament to print with. It's biodegradable, made from renewable resources like corn starch, and produces prints with a smooth finish. It's great for beginners and general prototyping, but has lower heat resistance and durability compared to other plastics.</p>
+            </div>
+            <div class="faq-item">
+                <h3>What is ABS used for?</h3>
+                <p>ABS (Acrylonitrile Butadiene Styrene) is known for its strength, flexibility, and higher temperature resistance. It's commonly used for functional parts, tools, and objects that need to withstand wear and tear. However, it can be more challenging to print due to warping, and it emits fumes during printing that require good ventilation.</p>
+            </div>
+            <div class="faq-item">
+                <h3>What is the difference between flexible filaments (TPU)?</h3>
+                <p>Flexible filaments like TPU (Thermoplastic Polyurethane) are rubber-like plastics used for objects that need to bend, stretch, or absorb impact. They are excellent for phone cases, wearables, and gaskets. Printing with them requires careful calibration due to their elasticity, which can cause tangles if not handled correctly.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How do I prevent warping during printing?</h3>
+                <p>Warping is common with materials like ABS and Nylon. To prevent it, ensure your print bed is level and properly adhered (using glue stick, hairspray, or special build surfaces). Use a heated print bed, keep your printer in an enclosure to maintain consistent temperature, and avoid drafts. Calibrate your print speed and cooling settings appropriately.</p>
+            </div>
         </section>
 
-        <footer class="fade-in">
-            <p>&copy; 2025 TurboDiesel Labs. All rights reserved.</p>
+        <footer>
+            <p>&copy; 2025 Filament Guide. All rights reserved. | Created with passion for 3D printing.</p>
         </footer>
+
+    </div>
+
+    <div id="color-picker-popout" class="color-picker-popout">
+        <div class="color-picker-content">
+            <h4>Theme Customization</h4>
+            <div class="color-control">
+                <label for="main-title-color">Main Title Glow:</label>
+                <input type="color" id="main-title-color" value="#00e676">
+            </div>
+            <div class="color-control">
+                <label for="accent-color">Accent (Headers, Nav):</label>
+                <input type="color" id="accent-color" value="#00e676">
+            </div>
+            <div class="color-control">
+                <label for="property-box-color">Property Box Background:</label>
+                <input type="color" id="property-box-color" value="#00e676">
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

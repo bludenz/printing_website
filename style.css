@@ -18,10 +18,15 @@ html, body {
     --scaled-saturate: calc(var(--glassiness-strength) * var(--base-saturate));
     --scaled-brightness: calc(1.0 + (var(--glassiness-strength) - 1.0) * 0.2);
 
-    /* NEW: Customizable Colors as CSS Variables */
+    /* Customizable Colors as CSS Variables (set by script.js) */
     --main-title-glow-color: #00e676; /* Default for H1 glow */
+    --main-title-glow-color-rgb: 0, 230, 118; /* RGB components for transparency */
+
     --accent-color: #00e676; /* Default for H2, H3, nav active/hover, etc. */
+    --accent-color-rgb: 0, 230, 118; /* RGB components for transparency */
+
     --property-box-bg-color: #00e676; /* Default for property box background */
+    --property-box-bg-color-rgb: 0, 230, 118; /* RGB components for transparency */
 }
 
 body {
@@ -33,13 +38,13 @@ body {
 }
 
 a {
-    color: var(--accent-color); /* Uses accent color */
+    color: var(--accent-color); /* Uses accent color for general links */
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: var(--accent-color); /* Still uses accent color, no transparency change here */
+    color: var(--accent-color);
     text-decoration: underline;
 }
 
@@ -107,7 +112,7 @@ a:hover {
     align-items: center;
     width: 55px;
     height: 55px;
-    color: #fff; /* Default color for icons */
+    color: #fff; /* Icons themselves remain white */
     font-size: 1.8em;
     border-radius: 50%;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
@@ -117,13 +122,12 @@ a:hover {
     border: 1px solid transparent;
 }
 
-/* Sidebar Active State - uses var(--accent-color) */
+/* Sidebar Active State - ONLY GLOW & BACKGROUND CHANGES */
 .sidebar-nav a.active {
-    /* Use rgba with var for transparency */
-    background-color: rgba(var(--accent-color-rgb), 0.35);
+    background-color: rgba(var(--accent-color-rgb), 0.35); /* Background uses accent color with transparency */
     transform: scale(1.15);
-    box-shadow: 0 0 25px var(--accent-color), 0 0 40px rgba(var(--accent-color-rgb), 0.7);
-    border-color: rgba(var(--accent-color-rgb), 0.8);
+    box-shadow: 0 0 25px var(--accent-color), 0 0 40px rgba(var(--accent-color-rgb), 0.7); /* Glow uses accent color */
+    border-color: rgba(var(--accent-color-rgb), 0.8); /* Border uses accent color */
 }
 
 .sidebar-nav a::before {
@@ -133,8 +137,7 @@ a:hover {
     left: 50%;
     width: 0;
     height: 0;
-    /* Use rgba with var for transparency */
-    background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.6) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.6) 0%, transparent 70%); /* Glow uses accent color */
     border-radius: 50%;
     transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
     transform: translate(-50%, -50%);
@@ -149,11 +152,10 @@ a:hover {
 }
 
 .sidebar-nav a:hover:not(.active) {
-    /* Use rgba with var for transparency */
-    background-color: rgba(var(--accent-color-rgb), 0.25);
+    background-color: rgba(var(--accent-color-rgb), 0.25); /* Background uses accent color with transparency */
     transform: scale(1.2);
-    box-shadow: 0 0 25px rgba(var(--accent-color-rgb), 0.9), 0 0 40px rgba(var(--accent-color-rgb), 0.6);
-    border: 1px solid rgba(var(--accent-color-rgb), 0.5);
+    box-shadow: 0 0 25px rgba(var(--accent-color-rgb), 0.9), 0 0 40px rgba(var(--accent-color-rgb), 0.6); /* Glow uses accent color */
+    border: 1px solid rgba(var(--accent-color-rgb), 0.5); /* Border uses accent color */
 }
 
 /* Tooltips for sidebar (pure CSS) - uses var(--accent-color) */
@@ -219,12 +221,13 @@ header.section-content {
     margin-top: 0;
 }
 
-/* H1 Title - uses var(--main-title-glow-color) */
+/* H1 Title - uses var(--main-title-glow-color) for glow, base color can be fixed or another variable if desired */
 header h1 {
     font-size: 5em;
     margin-bottom: 25px;
     letter-spacing: 5px;
-    text-shadow: 0 0 30px var(--main-title-glow-color), 0 0 50px rgba(var(--main-title-glow-color-rgb), 0.7);
+    color: #ffffff; /* Explicitly white for the main title text */
+    text-shadow: 0 0 30px var(--main-title-glow-color), 0 0 50px rgba(var(--main-title-glow-color-rgb), 0.7); /* Glow uses main-title-glow-color */
     line-height: 1.1;
 }
 
@@ -240,29 +243,29 @@ header p {
     left: 50%;
     transform: translateX(-50%);
     font-size: 3.5em;
-    color: var(--accent-color); /* Uses accent color */
+    color: var(--accent-color); /* Uses accent color for icon color */
     animation: bounce 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
     cursor: pointer;
-    text-shadow: 0 0 20px var(--accent-color), 0 0 30px rgba(var(--accent-color-rgb), 0.7);
+    text-shadow: 0 0 20px var(--accent-color), 0 0 30px rgba(var(--accent-color-rgb), 0.7); /* Glow uses accent color */
 }
 
-/* Common Section Headers - uses var(--accent-color) */
+/* Common Section Headers (h2) - uses var(--accent-color) for both color and glow */
 section h2 {
     font-size: 3.5em;
     text-align: center;
     margin-bottom: 45px;
-    color: var(--accent-color); /* Uses accent color */
+    color: var(--accent-color); /* Section header text color */
     text-transform: uppercase;
     letter-spacing: 4px;
-    text-shadow: 0 0 20px rgba(var(--accent-color-rgb), 0.8);
+    text-shadow: 0 0 20px rgba(var(--accent-color-rgb), 0.8); /* Section header glow */
 }
 
-/* Filament Item H3 - uses var(--accent-color) */
+/* Filament Item H3 - uses var(--accent-color) for color */
 section h3 {
     font-size: 2.2em;
     margin-top: 35px;
     margin-bottom: 25px;
-    color: var(--accent-color); /* Uses accent color */
+    color: var(--accent-color); /* Filament item title text color */
     text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
 }
 
@@ -355,16 +358,14 @@ section h3 {
 
 /* Specific placement for the green property boxes - uses var(--property-box-bg-color) */
 .filament-property-item {
-    /* Use rgba with var for transparency */
-    background: rgba(var(--property-box-bg-color-rgb), 0.2);
-    color: #fff;
+    background: rgba(var(--property-box-bg-color-rgb), 0.2); /* Background uses property box color with transparency */
+    color: #fff; /* Text color inside property box */
     padding: 10px 15px;
     border-radius: 25px;
     display: flex;
     align-items: center;
     gap: 10px;
-    /* Use rgba with var for transparency */
-    border: 1px solid rgba(var(--property-box-bg-color-rgb), 0.4);
+    border: 1px solid rgba(var(--property-box-bg-color-rgb), 0.4); /* Border uses property box color with transparency */
     box-shadow: 0 3px 10px rgba(0,0,0,0.3);
     box-sizing: border-box;
     justify-content: flex-start;
@@ -455,7 +456,7 @@ footer {
     }
 }
 
-/* NEW: Popup Overlay for background blur */
+/* Popup Overlay for background blur */
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -476,7 +477,7 @@ footer {
 }
 
 
-/* NEW: Color Picker Pop-out Styling (Clean, Modern) */
+/* Color Picker Pop-out Styling (Clean, Modern) */
 .color-picker-popout {
     position: fixed;
     top: 50%;
@@ -581,19 +582,22 @@ footer {
     border-radius: 8px;
 }
 
-/* NEW: Hide color picker toggle and popout by default for testing_mode */
+/* Hide color picker toggle and popout by default for testing_mode */
 #color-picker-toggle,
 .color-picker-popout {
     display: none; /* Hidden by default */
 }
-/* If testing_mode is enabled, JS will add a class to override this */
+/* If testing_mode is enabled, JS will add a class to body to override this */
 body.testing-mode #color-picker-toggle,
 body.testing-mode .color-picker-popout {
-    display: block; /* Or flex, depending on element */
+    display: block; /* Restore display */
 }
 /* For the sidebar toggle, it's a list item, so it needs to be block for <li> */
-body.testing-mode #color-picker-toggle {
-    display: flex; /* Restore flex for the <a> inside <li> */
+body.testing-mode .sidebar-nav li:last-child { /* Target the li wrapping the toggle */
+    display: block; /* Show the list item */
+}
+body.testing-mode #color-picker-toggle { /* Restore flex for the <a> itself */
+    display: flex;
 }
 
 

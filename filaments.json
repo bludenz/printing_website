@@ -11,6 +11,14 @@
             "colors": ["#FFFFFF", "#000000", "#808080", "#FF0000", "#0000FF", "#008000", "#FFFF00", "#f5f5dc"]
         },
         {
+            "id": "silk_pla",
+            "name": "Silk PLA",
+            "description": "Along side our most popular filament lies Silk PLA. Silk PLA is easy to print, has a clean, shiny finish and has the ability to change colour while printing, resulting in a gradient across the walls of a print. It is ideal for children's toys, gifts or fidget toys..",
+            "hardness_shore_d": 65,
+            "base_price_per_gram": 0.14,
+            "colors": ["#800080"]
+        },
+        {
             "id": "petg",
             "name": "PETG",
             "description": "PETG combines the ease of use of PLA with the strength and durability of ABS. It offers good layer adhesion, chemical resistance, and can withstand higher temperatures than PLA. Ideal for functional parts, mechanical components, and outdoor applications.",

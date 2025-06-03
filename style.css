@@ -623,3 +623,10 @@ footer {
         justify-content: center;
     }
 }
+
+/* NEW: Center filament items when exactly 2 are present */
+#filament-sections-container:has(.filament-item:nth-child(2):last-child) {
+    grid-template-columns: repeat(2, minmax(320px, 1fr));
+    justify-content: center;
+}
+

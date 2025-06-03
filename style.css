@@ -283,10 +283,15 @@ section h3 {
 /* Filament Types Section - Grid Layout for the entire container */
 #filament-sections-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Explicitly 4 columns */
+    /* Changed to 3 columns to achieve 3-2 layout */
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
     margin-top: 30px;
     align-items: stretch; /* Ensures filament items stretch to fill available height */
+    /* Centering the entire grid */
+    justify-content: center;
+    /* Centering individual items within their cells */
+    justify-items: center;
 }
 
 /* Individual Filament Item (now a grid container itself) */
@@ -334,7 +339,7 @@ section h3 {
 }
 
 /* The .filament-properties div now acts as a container for the three property items.
-   It's a flex column to stack its children with gap. */
+    It's a flex column to stack its children with gap. */
 .filament-properties {
     display: flex;
     flex-direction: column;
@@ -448,7 +453,8 @@ footer {
 /* Responsive Adjustments */
 @media (max-width: 1750px) {
     #filament-sections-container {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        /* Adjusted minmax to allow 3 items for a wider range, then drop */
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
     }
 }
 
@@ -464,7 +470,8 @@ footer {
         font-size: 3em;
     }
     #filament-sections-container {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        /* Allows for 2 columns on this screen size */
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         gap: 25px;
     }
 }
@@ -488,7 +495,8 @@ footer {
         padding: 40px;
     }
     #filament-sections-container {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        /* More aggressive minmax to ensure 2 columns or drop to 1 if necessary */
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 20px;
     }
 }
@@ -564,6 +572,7 @@ footer {
     }
 
     #filament-sections-container {
+        /* Force single column on smaller screens */
         grid-template-columns: 1fr;
         gap: 20px;
     }

@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Filament Data Loading & Display ---
-    fetch('filaments.json')
+    fetch('../filaments.json')
         .then(response => {
             if (!response.ok) {
                 const errorStatus = response.status;

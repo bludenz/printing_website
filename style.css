@@ -201,10 +201,9 @@ a:hover {
 
 
 header.section-content {
-    min-height: 95vh;
+    min-height: 85vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     text-align: center;
     padding: 70px 40px;
@@ -218,6 +217,7 @@ header h1 {
     letter-spacing: 5px;
     text-shadow: 0 0 30px rgba(0, 230, 118, 1), 0 0 50px rgba(0, 230, 118, 0.7);
     line-height: 1.1;
+    margin-top: 20vh;
 }
 
 header p {

@@ -13,15 +13,91 @@ document.addEventListener('DOMContentLoaded', () => {
     if (scrollDownArrow) {
         scrollDownArrow.addEventListener('click', () => {
             const aboutSection = document.getElementById('about-section');
+            let targetPosition;
+    
             if (aboutSection) {
-                aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Get the target scroll position for the 'about-section'
+                targetPosition = aboutSection.getBoundingClientRect().top + window.scrollY;
             } else {
-                window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+                // If 'about-section' not found, scroll down by 80% of window height
+                targetPosition = window.scrollY + window.innerHeight * 0.8;
             }
+    
+            // Call the custom slow scroll function
+        slowScrollTo(targetPosition, 2000); // 2000ms = 2 seconds duration
+    });
+        
+    if (scrollDownArrow) {
+        scrollDownArrow.addEventListener('click', () => {
+            const aboutSection = document.getElementById('about-section');
+            let targetPosition;
+    
+            if (aboutSection) {
+                // Get the target scroll position for the 'about-section'
+                targetPosition = aboutSection.getBoundingClientRect().top + window.scrollY;
+            } else {
+            // If 'about-section' not found, scroll down by 80% of window height
+                targetPosition = window.scrollY + window.innerHeight * 0.8;
+            }
+        // Call the custom slow scroll function
+            slowScrollTo(targetPosition, 2000); // 2000ms = 2 seconds duration
         });
     } else {
         console.warn("Scroll down arrow element not found.");
     }
+
+    function slowScrollTo(targetY, duration) {
+        const startY = window.scrollY;
+        const distance = targetY - startY;
+        let startTime = null;
+    
+        function animateScroll(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / duration, 1); // Ensure progress doesn't exceed 1
+    
+            window.scrollTo(0, startY + distance * easeInOutQuad(progress));
+    
+            if (timeElapsed < duration) {
+                requestAnimationFrame(animateScroll);
+            }
+        }
+    
+        // Easing function for a smoother start and end
+    function easeInOutQuad(t) {
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
+    
+        requestAnimationFrame(animateScroll);
+    }
+        } else {
+            console.warn("Scroll down arrow element not found.");
+        }
+
+    function slowScrollTo(targetY, duration) {
+        const startY = window.scrollY;
+        const distance = targetY - startY;
+        let startTime = null;
+
+    function animateScroll(currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1); // Ensure progress doesn't exceed 1
+
+        window.scrollTo(0, startY + distance * easeInOutQuad(progress));
+
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animateScroll);
+        }
+    }
+
+    // Easing function for a smoother start and end
+    function easeInOutQuad(t) {
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
+
+    requestAnimationFrame(animateScroll);
+}
 
     // --- Sidebar Navigation Smooth Scrolling ---
     if (sidebarLinks.length > 0) {

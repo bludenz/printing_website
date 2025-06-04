@@ -30,16 +30,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sidebarLinks.length > 0) {
         sidebarLinks.forEach(link => {
             link.addEventListener('click', function(e) {
-                e.preventDefault();
                 const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                // Check if the link is specifically for /login.html
+                if (targetId === '/login.html') {
+                    // If it's /login.html, allow default navigation (redirection)
+                    // No need to preventDefault() here, as we want the browser to navigate
+                    // directly to /login.html
+                    window.location.href = targetId; // Explicitly set the location
                 } else {
-                    console.warn(`Target element for ID '${targetId}' not found.`);
+                    // For all other links, prevent default and handle smooth scrolling
+                    e.preventDefault(); 
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    } else {
+                        console.warn(`Target element for ID '${targetId}' not found.`);
+                    }
                 }
             });
         });

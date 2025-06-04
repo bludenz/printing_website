@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     mainSections.forEach(section => {
         navObserver.observe(section);
+        console.log(`Currently in ${section}`)
     });
 
     // --- Filament Data Loading & Display ---

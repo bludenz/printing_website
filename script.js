@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const parallaxBg = document.getElementById('parallax-bg');
     const filamentSectionsContainer = document.getElementById('filament-sections-container');
     const sectionsToReveal = document.querySelectorAll('.fade-in');
+    let threshold;
 
     // Updated mainSections to only include existing sections with their new IDs
     const mainSections = document.querySelectorAll('#home-section, #about-section, #filament-types-section, #faq-section');
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navObserverOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.5 // Adjust this threshold if sections aren't highlighting correctly. 0.5 means 50% of the section must be visible.
+        threshold: threshold // Adjust this threshold if sections aren't highlighting correctly. 0.5 means 50% of the section must be visible.
     };
 
     const navObserver = new IntersectionObserver((entries) => {
@@ -69,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     mainSections.forEach(section => {
         navObserver.observe(section);
-        console.log(`Currently in ${section}`)
     });
 
     // --- Filament Data Loading & Display ---
@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const filaments = data.filaments;
+            let threshold = data.threshold;
 
             // Clear loading messages and populate filament sections
             if (filamentSectionsContainer) {

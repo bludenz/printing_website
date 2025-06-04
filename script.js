@@ -11,93 +11,91 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Scroll Down Arrow functionality ---
     if (scrollDownArrow) {
+        // Add a click event listener to the scroll down arrow button
         scrollDownArrow.addEventListener('click', () => {
+            // Get the 'about-section' element by its ID
             const aboutSection = document.getElementById('about-section');
-            let targetPosition;
-    
+            let targetPosition; // Variable to store the final scroll target Y-coordinate
+
+            // Determine the target scroll position
             if (aboutSection) {
-                // Get the target scroll position for the 'about-section'
+                // If the 'about-section' exists, scroll to its absolute top position
+                // getBoundingClientRect().top gives position relative to viewport
+                // window.scrollY gives current scroll position from top of document
+                // Adding them gives the absolute position of the element from the document's top
                 targetPosition = aboutSection.getBoundingClientRect().top + window.scrollY;
             } else {
-                // If 'about-section' not found, scroll down by 80% of window height
+                // If 'about-section' is not found, scroll down by 80% of the current window's height
+                // This provides a fallback if the specific section isn't present
                 targetPosition = window.scrollY + window.innerHeight * 0.8;
             }
-    
-            // Call the custom slow scroll function
-        slowScrollTo(targetPosition, 2000); // 2000ms = 2 seconds duration
-    });
-        
-    if (scrollDownArrow) {
-        scrollDownArrow.addEventListener('click', () => {
-            const aboutSection = document.getElementById('about-section');
-            let targetPosition;
-    
-            if (aboutSection) {
-                // Get the target scroll position for the 'about-section'
-                targetPosition = aboutSection.getBoundingClientRect().top + window.scrollY;
-            } else {
-            // If 'about-section' not found, scroll down by 80% of window height
-                targetPosition = window.scrollY + window.innerHeight * 0.8;
-            }
-        // Call the custom slow scroll function
-            slowScrollTo(targetPosition, 2000); // 2000ms = 2 seconds duration
+
+            // Call the custom slow scroll function with the determined target and a duration
+            // Adjust the '2000' value (in milliseconds) to control the scroll speed:
+            // - 1000ms = 1 second
+            // - 3000ms = 3 seconds (slower)
+            // - 500ms = 0.5 seconds (faster)
+            slowScrollTo(targetPosition, 2000); // Current duration: 2 seconds
         });
     } else {
-        console.warn("Scroll down arrow element not found.");
+        // Log a warning to the console if the scroll down arrow element is not found
+        console.warn("Scroll down arrow element (ID: 'scroll-down-arrow') not found. Please check your HTML ID and JavaScript selector.");
     }
 
+    /**
+     * Smoothly scrolls the window to a specified Y-coordinate over a given duration.
+     *
+     * @param {number} targetY - The absolute Y-coordinate (in pixels) to scroll to.
+     * @param {number} duration - The total duration of the scroll animation in milliseconds.
+     */
     function slowScrollTo(targetY, duration) {
+        // Get the current scroll position when the animation starts
         const startY = window.scrollY;
+        // Calculate the total distance to scroll
         const distance = targetY - startY;
-        let startTime = null;
-    
+        let startTime = null; // To store the timestamp when the animation begins
+
+        /**
+         * The core animation function, called repeatedly by requestAnimationFrame.
+         * @param {DOMHighResTimeStamp} currentTime - The current time provided by requestAnimationFrame.
+         */
         function animateScroll(currentTime) {
+            // Initialize startTime on the first call
             if (startTime === null) startTime = currentTime;
+
+            // Calculate the time elapsed since the animation started
             const timeElapsed = currentTime - startTime;
-            const progress = Math.min(timeElapsed / duration, 1); // Ensure progress doesn't exceed 1
-    
+
+            // Calculate the progress of the animation (0 to 1)
+            // Math.min ensures progress doesn't exceed 1 (100%) even if timeElapsed > duration
+            const progress = Math.min(timeElapsed / duration, 1);
+
+            // Calculate the new scroll position using an easing function
+            // This makes the scroll start and end smoothly, rather than linearly
             window.scrollTo(0, startY + distance * easeInOutQuad(progress));
-    
+
+            // Continue the animation if the duration has not yet been met
             if (timeElapsed < duration) {
                 requestAnimationFrame(animateScroll);
             }
+            // If timeElapsed >= duration, the animation stops naturally.
+            // No need for an 'else' block, as the last scrollTo would have set the final position.
         }
-    
-        // Easing function for a smoother start and end
-    function easeInOutQuad(t) {
-        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-    }
-    
+
+        /**
+         * An easing function for quadratic in-out animation.
+         * This creates a smoother acceleration and deceleration curve.
+         *
+         * @param {number} t - The linear progress (0 to 1).
+         * @returns {number} The eased progress (0 to 1).
+         */
+        function easeInOutQuad(t) {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        }
+
+        // Start the animation loop
         requestAnimationFrame(animateScroll);
     }
-        } else {
-            console.warn("Scroll down arrow element not found.");
-        }
-
-    function slowScrollTo(targetY, duration) {
-        const startY = window.scrollY;
-        const distance = targetY - startY;
-        let startTime = null;
-
-    function animateScroll(currentTime) {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const progress = Math.min(timeElapsed / duration, 1); // Ensure progress doesn't exceed 1
-
-        window.scrollTo(0, startY + distance * easeInOutQuad(progress));
-
-        if (timeElapsed < duration) {
-            requestAnimationFrame(animateScroll);
-        }
-    }
-
-    // Easing function for a smoother start and end
-    function easeInOutQuad(t) {
-        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-    }
-
-    requestAnimationFrame(animateScroll);
-}
 
     // --- Sidebar Navigation Smooth Scrolling ---
     if (sidebarLinks.length > 0) {

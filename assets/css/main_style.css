@@ -27,17 +27,6 @@ body {
     position: relative;
 }
 
-a {
-    color: #00e676;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-a:hover {
-    color: #69f0ae;
-    text-decoration: underline;
-}
-
 /* Background Image & Overlay (for Parallax) */
 .background-container {
     position: fixed;
@@ -71,105 +60,6 @@ a:hover {
     background-color: rgba(10, 10, 10, 0.8);
 }
 
-/* Sidebar Navigation */
-.sidebar-nav {
-    position: fixed;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(var(--scaled-blur)) saturate(var(--scaled-saturate)) brightness(var(--scaled-brightness)); /* Uses scaled variables */
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 30px;
-    padding: 15px 10px;
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255,255,255,0.05);
-    z-index: 100;
-}
-
-.sidebar-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar-nav li {
-    margin: 20px 0;
-}
-
-.sidebar-nav a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 55px;
-    height: 55px;
-    color: #fff;
-    font-size: 1.8em;
-    border-radius: 50%;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    text-shadow: 0 0 10px rgba(0,0,0,0.8);
-    position: relative;
-    overflow: hidden;
-    border: 1px solid transparent;
-}
-
-/* Sidebar Active State */
-.sidebar-nav a.active {
-    background-color: rgba(0, 230, 118, 0.35);
-    transform: scale(1.15);
-    box-shadow: 0 0 25px rgba(0, 230, 118, 1), 0 0 40px rgba(0, 230, 118, 0.8);
-    border-color: rgba(0, 230, 118, 0.8);
-}
-
-.sidebar-nav a::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: radial-gradient(circle, rgba(0, 230, 118, 0.6) 0%, transparent 70%);
-    border-radius: 50%;
-    transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    z-index: -1;
-}
-
-.sidebar-nav a:hover::before {
-    width: 120%;
-    height: 120%;
-    opacity: 1;
-}
-
-.sidebar-nav a:hover:not(.active) {
-    background-color: rgba(0, 230, 118, 0.25);
-    transform: scale(1.2);
-    box-shadow: 0 0 25px rgba(0, 230, 118, 0.9), 0 0 40px rgba(0, 230, 118, 0.6);
-    border: 1px solid rgba(0, 230, 118, 0.5);
-}
-
-/* Tooltips for sidebar (pure CSS) */
-.sidebar-nav a[title]:hover::after {
-    content: attr(title);
-    position: absolute;
-    left: 75px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.95);
-    color: #fff;
-    padding: 8px 15px;
-    border-radius: 10px;
-    white-space: nowrap;
-    font-size: 1em;
-    opacity: 1;
-    pointer-events: none;
-    transition: opacity 0.3s ease, left 0.3s ease;
-    z-index: 101;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-}
-
-
 /* Main Content Wrapper (The "floating" UI) */
 .content-wrapper {
     position: relative;
@@ -179,24 +69,6 @@ a:hover {
     padding: 0 40px; /* Overall internal padding */
     padding-left: calc(20px + 55px + 40px + 40px); /* Add sidebar width + gap + desired internal padding */
     box-sizing: border-box;
-}
-
-
-/* Section Styling (Glassmorphism applied to each section) */
-.section-content {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(var(--scaled-blur)) saturate(var(--scaled-saturate)) brightness(var(--scaled-brightness)); /* Uses scaled variables */
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 25px;
-    padding: 50px;
-    margin-bottom: 50px;
-    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.02);
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease;
-}
-
-.section-content:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 25px 100px rgba(0, 0, 0, 0.8);
 }
 
 
@@ -221,241 +93,11 @@ header h1 {
 }
 
 header p {
-    font-size: 2em;
+    font-size: 3em;
     opacity: 0.98;
     text-shadow: 0 0 15px rgba(0,0,0,0.6);
 }
 
-.scroll-down-arrow {
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 3.5em;
-    color: #00e676;
-    animation: bounce 2s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    cursor: pointer;
-    text-shadow: 0 0 20px rgba(0, 230, 118, 1), 0 0 30px rgba(0, 230, 118, 0.7);
-}
-
-/* Common Section Headers */
-section h2 {
-    font-size: 3.5em;
-    text-align: center;
-    margin-bottom: 45px;
-    color: #00e676;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    text-shadow: 0 0 20px rgba(0, 230, 118, 0.8);
-}
-
-section h3 {
-    font-size: 2.2em;
-    margin-top: 35px;
-    margin-bottom: 25px;
-    color: #ffffff;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
-}
-
-.section-content p, .section-content ul, .section-content ol {
-    font-size: 1.2em;
-    line-height: 2;
-    margin-bottom: 20px;
-    opacity: 0.95;
-}
-
-.section-content ul, .section-content ol {
-    margin-left: 40px;
-}
-
-.section-content li {
-    margin-bottom: 15px;
-}
-
-.note {
-    font-style: italic;
-    font-size: 1.05em;
-    color: #c0c0c0;
-    margin-top: 35px;
-    text-align: center;
-}
-
-/* Filament Types Section - Grid Layout for the entire container */
-#filament-sections-container {
-    display: grid;
-    /* Changed to 3 columns to achieve 3-2 layout */
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    margin-top: 30px;
-    align-items: stretch; /* Ensures filament items stretch to fill available height */
-    /* Centering the entire grid */
-    justify-content: center;
-    /* Centering individual items within their cells */
-    justify-items: center;
-}
-
-/* Individual Filament Item (now a grid container itself) */
-.filament-item {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(calc(var(--glassiness-strength) * 20px)) saturate(calc(var(--glassiness-strength) * 1.5));
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.2), 0 8px 30px rgba(0,0,0,0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box; /* Include padding/border in height */
-
-    /* NEW GRID FOR INTERNAL LAYOUT */
-    display: grid;
-    grid-template-columns: 1fr; /* Single column */
-    /* Define rows for title, description, price, hardness, colors */
-    grid-template-rows: auto 1fr auto auto auto; /* title, description (flexible), price, hardness, colors */
-    row-gap: 15px; /* Gap between grid rows within the item */
-}
-
-.filament-item:hover {
-    transform: translateY(-5px);
-    box-shadow: inset 0 0 25px rgba(0,0,0,0.3), 0 12px 40px rgba(0,0,0,0.6);
-}
-
-/* No .filament-spool-image or .filament-spool-svg styles here */
-
-.filament-item h3 {
-    font-size: 1.8em;
-    color: #00e676;
-    margin-top: 0; /* Remove default margin */
-    margin-bottom: 0; /* Managed by row-gap */
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    grid-row: 1; /* Explicitly place in the first row */
-}
-
-.filament-item p {
-    margin-bottom: 0; /* Managed by row-gap */
-    flex-grow: 1; /* This will make it take available space within its grid row */
-    grid-row: 2; /* Explicitly place in the second row */
-}
-
-/* The .filament-properties div now acts as a container for the three property items.
-    It's a flex column to stack its children with gap. */
-.filament-properties {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Gap between the property boxes (Price, Hardness, Colors) */
-    font-size: 1.0em;
-    flex-shrink: 0;
-    grid-column: 1; /* Ensure it stays in the single column */
-    /* Individual items will be placed in specific rows below */
-}
-
-/* Specific placement for the green property boxes */
-.filament-property-item {
-    background: rgba(0, 230, 118, 0.2);
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border: 1px solid rgba(0, 230, 118, 0.4);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-    box-sizing: border-box;
-    justify-content: flex-start;
-}
-
-.filament-price {
-    grid-row: 3; /* Places this item in the 3rd row of the .filament-item grid */
-}
-
-.filament-hardness {
-    grid-row: 4; /* Places this item in the 4th row of the .filament-item grid */
-}
-
-.filament-colors {
-    grid-row: 5; /* Places this item in the 5th row of the .filament-item grid */
-    flex-direction: column; /* Keep colors list as a column internally */
-    align-items: flex-start;
-    padding-bottom: 10px;
-}
-
-.filament-property-item i {
-    flex-shrink: 0; /* Prevent icons from shrinking */
-}
-
-.filament-colors i {
-    margin-right: 0; /* Remove right margin for icon in colors list */
-}
-
-.colors-list > .color-boxes-wrapper {
-    margin-top: 5px;
-}
-
-.color-boxes-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: flex-start;
-    width: 100%;
-}
-
-/* Perfect 25px by 25px Circle Color Box Styling */
-.color-box {
-    width: 25px; /* Exact width */
-    height: 25px; /* Exact height */
-    border-radius: 50%; /* Perfect circle */
-    border: 3px solid rgba(255, 255, 255, 0.5);
-    display: block;
-    box-shadow: 0 0 6px rgba(0,0,0,0.4);
-    flex-shrink: 0;
-}
-
-
-/* Footer */
-footer {
-    text-align: center;
-    padding: 50px 0;
-    margin-top: 70px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    font-size: 1.1em;
-    color: #d0d0d0;
-    background: rgba(15, 15, 15, 0.95);
-    border-bottom-left-radius: 25px;
-    border-bottom-right-radius: 25px;
-}
-
-/* Scroll Reveal Animation */
-.fade-in {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.fade-in.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Keyframes for bounce animation */
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0) translateX(-50%);
-    }
-    40% {
-        transform: translateY(-20px) translateX(-50%);
-    }
-    60% {
-        transform: translateY(-10px) translateX(-50%);
-    }
-}
-
-/* Responsive Adjustments */
-@media (max-width: 1750px) {
-    #filament-sections-container {
-        /* Adjusted minmax to allow 3 items for a wider range, then drop */
-        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-    }
 }
 
 @media (max-width: 1200px) {
@@ -468,11 +110,6 @@ footer {
     }
     section h2 {
         font-size: 3em;
-    }
-    #filament-sections-container {
-        /* Allows for 2 columns on this screen size */
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 25px;
     }
 }
 
@@ -491,54 +128,12 @@ footer {
     section h2 {
         font-size: 2.5em;
     }
-    .section-content {
-        padding: 40px;
-    }
-    #filament-sections-container {
-        /* More aggressive minmax to ensure 2 columns or drop to 1 if necessary */
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-    }
 }
 
 @media (max-width: 768px) {
     body {
         margin: 0;
         min-height: 100vh;
-    }
-    .sidebar-nav {
-        position: static;
-        transform: none;
-        width: calc(100% - 40px);
-        left: 0;
-        top: auto;
-        border-radius: 15px;
-        padding: 15px 0;
-        margin: 20px auto;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(var(--scaled-blur)) saturate(var(--scaled-saturate)) brightness(var(--scaled-brightness));
-    }
-
-    .sidebar-nav ul {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .sidebar-nav li {
-        margin: 8px 12px;
-    }
-
-    .sidebar-nav a {
-        width: 45px;
-        height: 45px;
-        font-size: 1.5em;
-    }
-
-    .sidebar-nav a[title]:hover::after {
-        display: none;
     }
 
     .content-wrapper {
@@ -570,45 +165,6 @@ footer {
     section h3 {
         font-size: 1.6em;
     }
-
-    #filament-sections-container {
-        /* Force single column on smaller screens */
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    /* On smaller screens, revert filament-item to flex column for simplicity and dynamic content */
-    .filament-item {
-        display: flex;
-        flex-direction: column;
-        row-gap: initial; /* Remove grid row gap */
-        justify-content: flex-start; /* Align content to start */
-    }
-
-    /* Remove specific grid placements for smaller screens */
-    /* Remove spool-related elements from grid-row resets */
-    .filament-item h3,
-    .filament-item p,
-    .filament-price,
-    .filament-hardness,
-    .filament-colors {
-        grid-row: unset; /* Remove explicit grid row assignments */
-        grid-column: unset;
-        margin-bottom: 15px; /* Reintroduce some spacing */
-    }
-    .filament-item p {
-        margin-bottom: 20px; /* More space for description */
-    }
-
-    .filament-properties { /* Revert to normal flow within flex item */
-        margin-top: 0; /* No extra top margin needed */
-        gap: 15px; /* Ensure gap between property items */
-    }
-
-    .filament-properties .filament-property-item {
-        width: 100%;
-        box-sizing: border-box;
-    }
 }
 
 /* Adjustments for very small screens */
@@ -619,14 +175,6 @@ footer {
     section h2 {
         font-size: 1.8em;
     }
-    .sidebar-nav ul {
-        justify-content: center;
-    }
-}
 
-/* NEW: Center filament items when exactly 2 are present */
-#filament-sections-container:has(.filament-item:nth-child(2):last-child) {
-    grid-template-columns: repeat(2, minmax(320px, 1fr));
-    justify-content: center;
 }
 

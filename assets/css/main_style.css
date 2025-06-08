@@ -73,7 +73,7 @@ body {
 
 
 header.section-content {
-    min-height: 75vh;
+    min-height: 74vh;
     display: flex;
     flex-direction: column;
     align-items: center;
